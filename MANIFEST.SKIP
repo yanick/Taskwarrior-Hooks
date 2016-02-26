@@ -1,0 +1,7 @@
+^dist.ini
+^MANIFEST.SKIP
+Taskwarrior-Hooks.*
+^\.gitignore
+^\.git
+^\.build
+

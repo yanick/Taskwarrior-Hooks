@@ -36,6 +36,8 @@ has feedback => (
 has plugins => sub {
     my $self = shift;
     
+    no warnings 'uninitialized';
+
     [ map { use_module($_)->new( tw => $self ) }
     map { s/^\+// ? $_ : 'Taskwarrior::Hooks::Plugin::' . $_ }
             split ',', $self->config->{twhooks}{plugins} ]

@@ -1,4 +1,5 @@
 #!/usr/bin/env perl
+#PODNAME: twhooks
 
 use Taskwarrior::Hooks::App;
 

@@ -33,17 +33,6 @@ sub on_exit {
     
 }
 
-sub setup {
-    my $self = shift;
-
-    return if $self->tw->config->{report}{before};
-
-    say "  creating pseudo-report 'before'";
-    system 'task', 'config', 'report.before.columns', 'id';
-    system 'task', 'config', 'report.before.description', 
-        'create a dependency for this task';
-}
-
 1;
 
 

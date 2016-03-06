@@ -1,5 +1,7 @@
 package Taskwarrior::Hooks::Hook;
 
+use 5.10.0;
+
 use strict;
 use warnings;
 
@@ -20,6 +22,43 @@ has tw => (
     required => 1,
     handles => 'Taskwarrior::Hooks::Core',
 );
+
+has name => sub {
+    my $self = shift;
+    my $name = ref $self;
+    return $name =~ s/Taskwarrior::Hooks::Plugin:://r || "+$name";
+};
+
+sub setup {
+    my $self = shift;
+
+    if( $self->can('custom_uda') ) {
+        say "Setting up custom UDAs...";
+        my $uda = $self->custom_uda;
+        for my $name ( keys %$uda ) {
+            my $c = "uda.$name";
+            say $name;
+            say "UDA already defined, skipping" and next
+                if $self->tw->config->{uda}{$name};
+            system 'task', 'config', $c . '.label', $uda->{$name};
+            system 'task', 'config', $c . '.type', 'string';
+        }
+    }
+
+    if ( $self->DOES('Taskwarrior::Hooks::Hook::OnCommand') ) {
+        my $name = $self->command_name;
+        if ( $self->tw->config->{report}{$name} ) {
+            say "report '$name' already exist, skipping";
+        }
+        else {
+            system 'task', 'config', 'report.'.$name.'.columns', 'id';
+            system 'task', 'config', 'report.'.$name.'.description', 
+                'pseudo-report for command';
+        }
+    }
+
+    
+}
 
 1;
 

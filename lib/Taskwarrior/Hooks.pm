@@ -1,9 +1,55 @@
 package Taskwarrior::Hooks;
-# ABSTRACT: Hook system for the Taskwarrior task manager
+# ABSTRACT: Hook plugin system for the Taskwarrior task manager
 
 =head1 SYNOPSIS
 
+    $ twhooks add GitCommit Command::Before Command::After
+
+    $ twhooks install
+
+    # enjoy!
+
 =head1 DESCRIPTION
+
+This module provides a plugin-based way to run hooks for the 
+cli-based task manager L<Taskwarrior|http://taskwarrior.org/>.
+
+=head2 Configuring Taskwarrior to use Taskwarrior::Hooks
+
+=head3 Setting up the hooks
+
+First, you need to install hook scripts that will invoke C<Taskwarrior::Hooks>
+when C<task> is running. You can do that by either using the helper C<twhooks>:
+
+    $ twhooks install
+
+Or dropping manually hook scripts in the F<~/.task/hooks> directory. The scripts
+should look like
+
+    #!/usr/bin/env perl
+
+    use Taskwarrior::Hooks;
+
+    Taskwarrior::Hooks->new( raw_args => \@ARGV )
+        ->run_event( 'launch' ); # change with 'add', 'modify', 'exit' 
+                                 # for the different scripts
+
+=head3 Setting which plugins to use
+
+Then you need to tell the system with plugins to use, either via C<twhooks>
+
+    $ twhooks add Command::After
+
+or directly via the Taskwarriorconfig
+
+    $ task config  twhooks.plugins  Command::After
+
+=head3 Configure the plugins
+
+The last step is to configure the different plugins. Read their 
+documentation to do it manually or, again, use C<twhooks>.
+
+    $ twhooks install
 
 =cut
 
@@ -21,17 +67,10 @@ use Path::Tiny;
 use Hash::Merge qw/merge /;
 use List::AllUtils qw/ reduce pairmap pairmap /;
 use JSON;
-use Taskwarrior::Hooks::Task;
 
 use experimental 'postderef';
 
-use overload 
-    fallback => 1,
-    '.' => sub {
-        my( $self, $other, $reversed ) = @_;
-        $self->add_feedback($other);
-        $self;
-    };
+with 'Taskwarrior::Hooks::Core';
 
 has raw_args => (
     is => 'ro',
@@ -44,23 +83,10 @@ has raw_args => (
     },
 );
 
-has $_ => (
-    is => 'rw',
-) for  qw/ api version args command rc data /;
-
-has data_dir => sub {
-    path( $_[0]->data );
-};
-
-has feedback => (
-    is => 'rw',
-    default => sub { [] },
+has exit_on_failure => (
+    is => 'ro',
+    default => 1,
 );
-
-sub add_feedback {
-    my $self = shift;
-    push $self->feedback->@*, @_;
-}
 
 has config => sub {
     run3 [qw/ task rc.verbose=nothing rc.hooks=off show /], undef, \my $output;
@@ -78,27 +104,54 @@ sub run_event {
 
     my $method = join '_', 'run', $event;
 
-    with map { s/^\+// ? $_ : 'Taskwarrior::Hooks::Hook::' . $_ }
-             $self->config->{twhooks}{plugins};
+    my @plugins = $self->plugins->@*;
 
-    my @tasks = map { Taskwarrior::Hooks::Task->new(%$_) } map { from_json($_) } <STDIN>;
+    my @tasks = map { from_json($_) } <STDIN>;
 
     try {
-        $self->$method(@tasks);
+        $self->$method(\@plugins,@tasks);
     }
     catch {
         say $_;
+        exit 1 if $self->exit_on_failure;
     };
 }
 
 sub run_exit {
-    my $self = shift;
-    $self->on_exit(@_);
+    my( $self, $plugins, @tasks ) = @_;
+    $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnExit') } @$plugins;
+    say for $self->feedback->@*;
 }
 
-sub on_exit { 
-    say for $_[0]->feedback->@*;
-};
+sub run_launch {
+    my( $self, $plugins, @tasks ) = @_;
 
+    for my $cmd ( grep { $_->DOES('Taskwarrior::Hooks::Hook::OnCommand') } @$plugins ) {
+        next unless $cmd->command_name eq $self->command;
+        $cmd->on_command(@tasks);
+        die sprintf "ran custom command '%s'\n", $cmd->command_name;
+    }
+
+    $_->on_launch(@tasks) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnLaunch') } @$plugins;
+    say for $self->feedback->@*;
+}
+
+sub run_add {
+    my( $self, $plugins, $task ) = @_;
+    $_->on_add($task) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnAdd') } @$plugins;
+    say to_json($task);
+    say for $self->feedback->@*;
+}
+
+sub run_modify {
+    my( $self, $plugins, $old, $new ) = @_;
+    for( grep { $_->DOES('Taskwarrior::Hooks::Hook::OnModify') } @$plugins ) {
+        use Hash::Diff;
+        my $diff = Hash::Diff::diff( $old, $new );
+        $_->on_modify( $new, $old, $diff  );
+    }
+    say to_json($new);
+    say for $self->feedback->@*;
+}
 
 1;

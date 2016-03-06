@@ -1,0 +1,5 @@
+#!/usr/bin/env perl
+
+use Taskwarrior::Hooks::App;
+
+Taskwarrior::Hooks::App->new_with_command->run;

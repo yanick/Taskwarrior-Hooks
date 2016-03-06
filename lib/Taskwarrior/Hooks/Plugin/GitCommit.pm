@@ -1,13 +1,17 @@
-package Taskwarrior::Hooks::Hook::GitCommit;
+package Taskwarrior::Hooks::Plugin::GitCommit;
 
 use strict;
 use warnings;
 
-use Moo::Role;
+use Moo;
+
+extends 'Taskwarrior::Hooks::Hook';
+
+with 'Taskwarrior::Hooks::Hook::OnExit';
 
 use Git::Repository;
 
-before on_exit => sub {
+sub on_exit {
     my $self = shift;
 
     my $dir = $self->data_dir;

@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Plugin::ProjectAlias
+package Taskwarrior::Hooks::Plugin::ProjectAlias;
 
 use strict;
 use warnings;

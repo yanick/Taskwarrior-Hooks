@@ -3,6 +3,8 @@ package Taskwarrior::Hooks::Plugin::GitCommit;
 use strict;
 use warnings;
 
+use Module::Runtime qw/ use_module /;
+
 use Moo;
 
 extends 'Taskwarrior::Hooks::Hook';
@@ -16,6 +18,9 @@ sub on_exit {
 
     my $dir = $self->data_dir;
 
+    my $lock = use_module( 'File::Flock::Tiny' )->trylock( "$dir/git.lock" )
+        or return "git lock found";    
+
     unless( $dir->child('.git')->exists ) {
         Git::Repository->command( init => $dir );
         $self .= "initiated git repo for '$dir'";
@@ -28,6 +33,8 @@ sub on_exit {
 
     $git->run( 'add', '.' );
     $git->run( 'commit', '--message', 'on-exit saving' );
+
+    $lock->release;
 };
 
 1;

@@ -55,6 +55,14 @@ sub add_feedback {
     push $self->feedback->@*, @_;
 }
 
+sub export_tasks {
+    my( $self, @query ) = @_;
+
+    run3 [qw/ task export /, @query], undef, \my $out;
+
+    return @{ from_json $out };
+}
+
 sub import_task {
     my( $self, $task ) = @_;
 

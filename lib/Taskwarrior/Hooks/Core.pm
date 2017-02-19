@@ -58,7 +58,7 @@ sub add_feedback {
 sub export_tasks {
     my( $self, @query ) = @_;
 
-    run3 [qw/ task export /, @query], undef, \my $out;
+    run3 [qw/ task rc.recurrence=no rc.hooks=off export /, @query], undef, \my $out;
 
     return @{ from_json $out };
 }
@@ -68,13 +68,13 @@ sub import_task {
 
     my $in = to_json $task;
 
-    run3 [qw/ task import /], \$in;
+    run3 [qw/ task rc.recurrence=no import /], \$in;
 }
 
 sub calc {
     my( $self, @stuff ) = @_;
 
-    run3 [qw/ task calc /, @stuff ], undef, \my $output;
+    run3 [qw/ task rc.recurrence=no rc.hooks=off calc /, @stuff ], undef, \my $output;
     chomp $output;
 
     return $output;

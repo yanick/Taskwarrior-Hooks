@@ -32,6 +32,8 @@ to C<add_feedback>.
 
 =head2 METHODS
 
+=cut
+
 use 5.10.0;
 
 use strict;

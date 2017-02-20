@@ -24,7 +24,7 @@ sub run {
 
     say "setting plugins to ", join ', ', @plugins;
 
-    system 'task', 'config', 'twhooks.plugins', join ',', @plugins;
+    system 'task', 'config', 'kusarigama.plugins', join ',', @plugins;
 }
 
 1;

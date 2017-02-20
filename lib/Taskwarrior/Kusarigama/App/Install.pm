@@ -3,7 +3,7 @@ package Taskwarrior::Kusarigama::App::Install;
 
 =head1 SYNOPSIS
 
-    $ twhooks install
+    $ task-kusarigama install
 
 =head1 DESCRIPTION
 
@@ -13,7 +13,7 @@ Do the few things required to make Taskwarrior uses L<Taskwarrior::Kusarigama>. 
 
 =item * 
 
-Create the hook files "I<event>-twhooks.pl" in F<~/.task/hooks> directory. If the files already exist, nothing is done.
+Create the hook files "I<event>-kusarigama.pl" in F<~/.task/hooks> directory. If the files already exist, nothing is done.
 
 =item *
 
@@ -31,7 +31,7 @@ use warnings;
 use File::HomeDir;
 use Path::Tiny;
 
-use Taskwarrior::Kusarigama;
+use Taskwarrior::Kusarigama::Hook;
 
 use MooseX::App::Command;
 use MooseX::MungeHas;
@@ -39,7 +39,7 @@ use MooseX::MungeHas;
 use experimental 'postderef';
 
 has tw => sub {
-    Taskwarrior::Kusarigama->new( data => '~/.task/' )
+    Taskwarrior::Kusarigama::Hook->new( data => '~/.task/' )
 };
 
 sub run {
@@ -72,7 +72,7 @@ sub install_hook_scripts {
 sub install_script {
     my( $self, $dir, $event ) = @_;
 
-    my $file = $dir->child( 'on-' . $event . '-tw_hooks.pl' );
+    my $file = $dir->child( 'on-' . $event . '-kusarigama.pl' );
     return warn "'$file' already exist, skipping\n" if $file->exists;
 
     say "installing '$file'...";
@@ -80,9 +80,9 @@ sub install_script {
     $file->spew(<<"END");
 #!/usr/bin/env perl
 
-use Taskwarrior::Kusarigama;
+use Taskwarrior::Kusarigama::Hook;
 
-Taskwarrior::Kusarigama->new( raw_args => \\\@ARGV )->run_event( '$event' );
+Taskwarrior::Kusarigama::Hook->new( raw_args => \\\@ARGV )->run_event( '$event' );
 
 END
 

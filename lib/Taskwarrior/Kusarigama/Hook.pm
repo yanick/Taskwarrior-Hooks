@@ -73,7 +73,7 @@ has raw_args => (
     default => sub { [] },
     trigger => sub {
        my( $self, $new ) = @_;
-      
+
        pairmap { $self->$a($b) }
         map { split ':', $_, 2 } @$new
     },

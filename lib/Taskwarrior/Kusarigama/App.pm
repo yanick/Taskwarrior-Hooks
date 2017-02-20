@@ -22,8 +22,10 @@ use warnings;
 use MooseX::App;
 use MooseX::MungeHas;
 
+use Taskwarrior::Kusarigama::Hook;
+
 has tw => sub {
-    Taskwarrior::Kusarigama->new( data => '~/.task/' )
+    Taskwarrior::Kusarigama::Hook->new( data => '~/.task/' )
 };
 
 1;

@@ -68,7 +68,7 @@ The inner workings of the plugin system are fairly simple.
 The list of plugins we want to be active lives in the taskwarrior
 configuration under the key <kusarigama.plugins>. E.g.,
 
-    twhooks.plugins=Renew,Command::Before,Command::After,+FishCurrent
+    kusarigama.plugins=Renew,Command::Before,Command::After,+FishCurrent
 
 Plugin namess prefixed with a plus sign are left left alone (minus the '+'),
 while the other ones get C<Taskwarrior::Kusarigama::Plugin::> prefixed to
@@ -229,3 +229,6 @@ the original blog entry
 =back
 
 =cut
+
+# TODO document the kusarigama.dir key
+1;

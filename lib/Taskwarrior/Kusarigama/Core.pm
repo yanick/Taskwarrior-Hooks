@@ -83,6 +83,7 @@ has plugins => sub {
 
 before plugins => sub {
     my $self = shift;
+    no warnings 'uninitialized';
     @INC = uniq @INC,  
         map { s/^\./$self->data_dir/er }
         split ':', $self->config->{kusarigama}{lib};

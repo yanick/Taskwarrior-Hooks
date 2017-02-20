@@ -184,6 +184,40 @@ of themselves upon completion:
 
     1;
 
+=head3 Aborting the pipeline
+
+Any plugin can abort the taskwarrior process by simply C<die>ing.
+
+    sub on_add {
+        my( $self, $task ) = @_;
+
+        die "need jira ticket for work tasks"
+            if $task->{project} eq 'work' and not $task->{jira};
+    }
+
+=head3 Providing feedback to the user
+
+=for TODO this could be much better
+    $self->log( );  with colors?
+    Or just, y'know, 'say'?
+
+To print feedback to the user. Plugins can use
+the method C<add_feedback>, or use the overloaded
+concatenation operator on the object.
+
+    sub on_add {
+        my( $self, $task ) = @_;
+
+        $self .= 'adding a task';
+        # or ' $self->add_feedback( 'adding a task' );
+
+        ...
+    }
+
+
+
+
+
 =head1 SEE ALSO
 
 =over

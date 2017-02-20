@@ -1,4 +1,5 @@
-package Taskwarrior::Kusarigama::Hook;
+package Taskwarrior::Kusarigama::Plugin;
+# ABSTRACT: Base class for Kusarigama plugins
 
 use 5.10.0;
 

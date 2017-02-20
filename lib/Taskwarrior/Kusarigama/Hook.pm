@@ -1,9 +1,20 @@
-package Taskwarrior::Kusarigama;
-# ABSTRACT: plugin system for the Taskwarrior task manager
+package Taskwarrior::Kusarigama::Hook;
+# ABSTRACT: Entry-point for Kusarigama's hook scripts
+
+=head1 SYNOPSIS
+
+    # most likely in one of the ~/.task/hooks/on-xxx.pl scripts
+
+    use Taskwarrior::Kusarigama::Hook;
+
+    Taskwarrior::Kusarigama::Hook->new(
+        raw_args => @ARGV
+    )->run_event( 'launch' );
 
 =head1 DESCRIPTION
 
-To use L<Taskwarrior::Kusarigama>, 
+This is the entry point for kusarigama when running it as a
+Taskwarrior hook. 
 
 =cut
 
@@ -26,9 +37,40 @@ use experimental 'postderef';
 
 with 'Taskwarrior::Kusarigama::Core';
 
+=head1 METHODS
+
+=head2 new
+
+    my $kusarigama = Taskwarrior::Kusarigama::Hook->new(
+        raw_args =>  [],   
+    );
+
+Constructor. Recognizes the following arguments
+
+=over
+
+=item raw_args
+
+Reference to the list of arguments as passed to the taskwarrior hooks.
+
+=item exit_on_failure 
+
+=for TODO We don't really need that, do we? Let's just die right there
+
+If the system should exit with an error code when one of the plugin 
+throws an exception (and thus abort the executiong of the remaining of the 
+taskwarrior
+pipeline).
+
+Defaults to C<true>.
+
+=back
+
+=cut
+
 has raw_args => (
     is => 'ro',
-    default => sub { +{} },
+    default => sub { [] },
     trigger => sub {
        my( $self, $new ) = @_;
       
@@ -42,6 +84,14 @@ has exit_on_failure => (
     default => 1,
 );
 
+=head2 config
+
+    my $config = $kusarigama->config;
+
+Returns taskwarrior's configuration as C<task show> would.
+
+=cut
+
 has config => sub {
     run3 [qw/ task rc.verbose=nothing rc.hooks=off show /], undef, \my $output;
     $output =~ s/^.*?---$//sm;
@@ -52,6 +102,17 @@ has config => sub {
         reduce { +{ $b => $a } } $_->[1], reverse split '\.', $_->[0]
     } map { [split ' ', $_, 2] } grep { /\w/ } split "\n", $output;
 };
+
+=head2 run_event
+
+    $kusarigama->run_event( 'launch' );
+
+Runs all plugins associated with the provided stage.
+
+If C<exit_on_failure> is true, it will die if a plugin throws an
+exception. 
+
+=cut
 
 sub run_event {
     my( $self, $event ) = @_;
@@ -67,15 +128,36 @@ sub run_event {
     }
     catch {
         say $_;
+        # TODO die instead of exit
         exit 1 if $self->exit_on_failure;
     };
 }
+
+# TODO document how to abort the pipeline (by dying)
+# TODO document 'feedback'
+
+=head2 run_exit
+
+    $kusarigama->run_exit;
+
+Runs the exit stage part of the plugins.
+
+=cut
 
 sub run_exit {
     my( $self, $plugins, @tasks ) = @_;
     $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnExit') } @$plugins;
     say for $self->feedback->@*;
 }
+
+=head2 run_launch
+
+    $kusarigama->run_launch;
+
+Runs the launch stage part of the plugins. Also intercepts and
+run custom commands.
+
+=cut
 
 sub run_launch {
     my( $self, $plugins, @tasks ) = @_;
@@ -90,12 +172,30 @@ sub run_launch {
     say for $self->feedback->@*;
 }
 
+=head2 run_add
+
+    $kusarigama->run_add;
+
+Runs the add stage part of the plugins.
+
+=cut
+
 sub run_add {
     my( $self, $plugins, $task ) = @_;
     $_->on_add($task) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnAdd') } @$plugins;
     say to_json($task);
     say for $self->feedback->@*;
 }
+
+=head2 run_modify
+
+    $kusarigama->run_modify;
+
+Runs the modify stage part of the plugins.
+
+=cut
+
+# TODO document the $old, $new, $diff
 
 sub run_modify {
     my( $self, $plugins, $old, $new ) = @_;
@@ -105,7 +205,7 @@ sub run_modify {
         $_->on_modify( $new, $old, $diff  );
     }
     say to_json($new);
-    say for $selffeedback->@*;
+    say for $self->feedback->@*;
 }
 
 1;

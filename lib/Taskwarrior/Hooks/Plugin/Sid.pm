@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Plugin::Sid;
+package Taskwarrior::Kusarigama::Plugin::Sid;
 
 use strict;
 use warnings;
@@ -8,9 +8,9 @@ use 5.20.0;
 use Moo;
 use MooseX::MungeHas;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnAdd';
+with 'Taskwarrior::Kusarigama::Hook::OnAdd';
 
 has custom_uda => sub{ +{
     sid => 'stable id',

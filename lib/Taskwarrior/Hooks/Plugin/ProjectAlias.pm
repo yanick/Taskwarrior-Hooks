@@ -1,14 +1,14 @@
-package Taskwarrior::Hooks::Plugin::ProjectAlias;
+package Taskwarrior::Kusarigama::Plugin::ProjectAlias;
 
 use strict;
 use warnings;
 
 use Moo;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnAdd';
-with 'Taskwarrior::Hooks::Hook::OnModify';
+with 'Taskwarrior::Kusarigama::Hook::OnAdd';
+with 'Taskwarrior::Kusarigama::Hook::OnModify';
 
 sub on_add {
     my( $self, $task ) = @_;

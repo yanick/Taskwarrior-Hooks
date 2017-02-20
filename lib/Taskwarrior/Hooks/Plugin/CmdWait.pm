@@ -1,13 +1,13 @@
-package Taskwarrior::Hooks::Plugin::CmdWait;
+package Taskwarrior::Kusarigama::Plugin::CmdWait;
 
 use strict;
 use warnings;
 
 use Moo;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnCommand';
+with 'Taskwarrior::Kusarigama::Hook::OnCommand';
 
 sub command_name { 'hide' }
 

@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Hook::OnExit;
+package Taskwarrior::Kusarigama::Hook::OnExit;
 
 use strict;
 use warnings;

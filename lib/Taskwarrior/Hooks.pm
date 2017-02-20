@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks;
+package Taskwarrior::Kusarigama;
 # ABSTRACT: Hook plugin system for the Taskwarrior task manager
 
 =head1 SYNOPSIS
@@ -14,11 +14,11 @@ package Taskwarrior::Hooks;
 This module provides a plugin-based way to run hooks for the 
 cli-based task manager L<Taskwarrior|http://taskwarrior.org/>.
 
-=head2 Configuring Taskwarrior to use Taskwarrior::Hooks
+=head2 Configuring Taskwarrior to use Taskwarrior::Kusarigama
 
 =head3 Setting up the hooks
 
-First, you need to install hook scripts that will invoke C<Taskwarrior::Hooks>
+First, you need to install hook scripts that will invoke C<Taskwarrior::Kusarigama>
 when C<task> is running. You can do that by either using the helper C<twhooks>:
 
     $ twhooks install
@@ -28,9 +28,9 @@ should look like
 
     #!/usr/bin/env perl
 
-    use Taskwarrior::Hooks;
+    use Taskwarrior::Kusarigama;
 
-    Taskwarrior::Hooks->new( raw_args => \@ARGV )
+    Taskwarrior::Kusarigama->new( raw_args => \@ARGV )
         ->run_event( 'launch' ); # change with 'add', 'modify', 'exit' 
                                  # for the different scripts
 
@@ -70,7 +70,7 @@ use JSON;
 
 use experimental 'postderef';
 
-with 'Taskwarrior::Hooks::Core';
+with 'Taskwarrior::Kusarigama::Core';
 
 has raw_args => (
     is => 'ro',
@@ -119,33 +119,33 @@ sub run_event {
 
 sub run_exit {
     my( $self, $plugins, @tasks ) = @_;
-    $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnExit') } @$plugins;
+    $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnExit') } @$plugins;
     say for $self->feedback->@*;
 }
 
 sub run_launch {
     my( $self, $plugins, @tasks ) = @_;
 
-    for my $cmd ( grep { $_->DOES('Taskwarrior::Hooks::Hook::OnCommand') } @$plugins ) {
+    for my $cmd ( grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnCommand') } @$plugins ) {
         next unless $cmd->command_name eq $self->command;
         $cmd->on_command(@tasks);
         die sprintf "ran custom command '%s'\n", $cmd->command_name;
     }
 
-    $_->on_launch(@tasks) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnLaunch') } @$plugins;
+    $_->on_launch(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnLaunch') } @$plugins;
     say for $self->feedback->@*;
 }
 
 sub run_add {
     my( $self, $plugins, $task ) = @_;
-    $_->on_add($task) for grep { $_->DOES('Taskwarrior::Hooks::Hook::OnAdd') } @$plugins;
+    $_->on_add($task) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnAdd') } @$plugins;
     say to_json($task);
     say for $self->feedback->@*;
 }
 
 sub run_modify {
     my( $self, $plugins, $old, $new ) = @_;
-    for( grep { $_->DOES('Taskwarrior::Hooks::Hook::OnModify') } @$plugins ) {
+    for( grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnModify') } @$plugins ) {
         use Hash::Diff;
         my $diff = Hash::Diff::diff( $old, $new );
         $_->on_modify( $new, $old, $diff  );

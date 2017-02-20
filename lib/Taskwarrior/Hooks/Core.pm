@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Core;
+package Taskwarrior::Kusarigama::Core;
 
 use strict;
 use warnings;
@@ -39,7 +39,7 @@ has plugins => sub {
     no warnings 'uninitialized';
 
     [ map { use_module($_)->new( tw => $self ) }
-    map { s/^\+// ? $_ : ( 'Taskwarrior::Hooks::Plugin::' . $_ ) }
+    map { s/^\+// ? $_ : ( 'Taskwarrior::Kusarigama::Plugin::' . $_ ) }
             split ',', $self->config->{twhooks}{plugins} ]
 };
 

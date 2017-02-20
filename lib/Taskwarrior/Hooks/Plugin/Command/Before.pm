@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Plugin::Command::Before;
+package Taskwarrior::Kusarigama::Plugin::Command::Before;
 
 use 5.10.0;
 
@@ -7,10 +7,10 @@ use warnings;
 
 use Moo;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnCommand';
-with 'Taskwarrior::Hooks::Hook::OnExit';
+with 'Taskwarrior::Kusarigama::Hook::OnCommand';
+with 'Taskwarrior::Kusarigama::Hook::OnExit';
 
 sub on_command {
     my $self = shift;

@@ -1,13 +1,13 @@
-package Taskwarrior::Hooks::Plugin::SingleActive;
+package Taskwarrior::Kusarigama::Plugin::SingleActive;
 
 use strict;
 use warnings;
 
 use Moo;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnLaunch';
+with 'Taskwarrior::Kusarigama::Hook::OnLaunch';
 
 sub on_launch {
     my $self = shift;

@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Plugin::Renew;
+package Taskwarrior::Kusarigama::Plugin::Renew;
 
 use strict;
 use warnings;
@@ -9,9 +9,9 @@ use List::AllUtils qw/ any /;
 use Moo;
 use MooseX::MungeHas;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnExit';
+with 'Taskwarrior::Kusarigama::Hook::OnExit';
 
 use experimental 'postderef';
 

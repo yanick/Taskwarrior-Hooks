@@ -1,5 +1,5 @@
-package Taskwarrior::Hooks::App;
-# ABSTRACT: helper app for Taskwarrior::Hooks
+package Taskwarrior::Kusarigama::App;
+# ABSTRACT: helper app for Taskwarrior::Kusarigama
 
 =head1 SYNOPSIS
 
@@ -14,7 +14,7 @@ use MooseX::App;
 use MooseX::MungeHas;
 
 has tw => sub {
-    Taskwarrior::Hooks->new( data => '~/.task/' )
+    Taskwarrior::Kusarigama->new( data => '~/.task/' )
 };
 
 1;

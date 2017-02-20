@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Task;
+package Taskwarrior::Kusarigama::Task;
 
 use strict;
 use warnings;

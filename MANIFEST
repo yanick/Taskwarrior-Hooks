@@ -31,6 +31,7 @@ lib/Taskwarrior/Hooks/Plugin/Command/Hide.pm
 lib/Taskwarrior/Hooks/Plugin/GitCommit.pm
 lib/Taskwarrior/Hooks/Plugin/ProjectAlias.pm
 lib/Taskwarrior/Hooks/Plugin/Renew.pm
+lib/Taskwarrior/Hooks/Plugin/Sid.pm
 lib/Taskwarrior/Hooks/Plugin/SingleActive.pm
 lib/Taskwarrior/Hooks/Task.pm
 t/00-compile.t

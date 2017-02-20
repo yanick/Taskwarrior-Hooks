@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::App::Add;
+package Taskwarrior::Kusarigama::App::Add;
 # ABSTRACT: Add plugins to Taskwarrior
 
 use 5.10.0;
@@ -8,14 +8,14 @@ use warnings;
 
 use List::AllUtils qw/ uniq /;
 
-use Taskwarrior::Hooks;
+use Taskwarrior::Kusarigama;
 
 use MooseX::App::Command;
 use MooseX::MungeHas;
 
 use experimental 'postderef';
 
-extends 'Taskwarrior::Hooks::App';
+extends 'Taskwarrior::Kusarigama::App';
 
 sub run {
     my $self = shift;

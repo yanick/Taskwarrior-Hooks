@@ -1,5 +1,5 @@
-package Taskwarrior::Hooks::App::Install;
-# ABSTRACT: install scripts and tweak config for Taskwarrior::Hooks
+package Taskwarrior::Kusarigama::App::Install;
+# ABSTRACT: install scripts and tweak config for Taskwarrior::Kusarigama
 
 =head1 SYNOPSIS
 
@@ -7,7 +7,7 @@ package Taskwarrior::Hooks::App::Install;
 
 =head1 DESCRIPTION
 
-Do the few things required to make Taskwarrior uses L<Taskwarrior::Hooks>. Namely:
+Do the few things required to make Taskwarrior uses L<Taskwarrior::Kusarigama>. Namely:
 
 =over
 
@@ -31,7 +31,7 @@ use warnings;
 use File::HomeDir;
 use Path::Tiny;
 
-use Taskwarrior::Hooks;
+use Taskwarrior::Kusarigama;
 
 use MooseX::App::Command;
 use MooseX::MungeHas;
@@ -39,7 +39,7 @@ use MooseX::MungeHas;
 use experimental 'postderef';
 
 has tw => sub {
-    Taskwarrior::Hooks->new( data => '~/.task/' )
+    Taskwarrior::Kusarigama->new( data => '~/.task/' )
 };
 
 sub run {
@@ -80,9 +80,9 @@ sub install_script {
     $file->spew(<<"END");
 #!/usr/bin/env perl
 
-use Taskwarrior::Hooks;
+use Taskwarrior::Kusarigama;
 
-Taskwarrior::Hooks->new( raw_args => \\\@ARGV )->run_event( '$event' );
+Taskwarrior::Kusarigama->new( raw_args => \\\@ARGV )->run_event( '$event' );
 
 END
 

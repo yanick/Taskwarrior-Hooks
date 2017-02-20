@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Hook::OnModify;
+package Taskwarrior::Kusarigama::Hook::OnModify;
 
 use strict;
 use warnings;

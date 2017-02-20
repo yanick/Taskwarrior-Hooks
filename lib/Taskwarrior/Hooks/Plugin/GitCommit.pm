@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Plugin::GitCommit;
+package Taskwarrior::Kusarigama::Plugin::GitCommit;
 
 use strict;
 use warnings;
@@ -7,9 +7,9 @@ use Module::Runtime qw/ use_module /;
 
 use Moo;
 
-extends 'Taskwarrior::Hooks::Hook';
+extends 'Taskwarrior::Kusarigama::Hook';
 
-with 'Taskwarrior::Hooks::Hook::OnExit';
+with 'Taskwarrior::Kusarigama::Hook::OnExit';
 
 use Git::Repository;
 

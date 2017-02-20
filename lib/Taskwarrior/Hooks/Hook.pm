@@ -1,4 +1,4 @@
-package Taskwarrior::Hooks::Hook;
+package Taskwarrior::Kusarigama::Hook;
 
 use 5.10.0;
 
@@ -20,13 +20,13 @@ use overload
 has tw => (
     is => 'ro',
     required => 1,
-    handles => 'Taskwarrior::Hooks::Core',
+    handles => 'Taskwarrior::Kusarigama::Core',
 );
 
 has name => sub {
     my $self = shift;
     my $name = ref $self;
-    return $name =~ s/Taskwarrior::Hooks::Plugin:://r || "+$name";
+    return $name =~ s/Taskwarrior::Kusarigama::Plugin:://r || "+$name";
 };
 
 sub setup {
@@ -45,7 +45,7 @@ sub setup {
         }
     }
 
-    if ( $self->DOES('Taskwarrior::Hooks::Hook::OnCommand') ) {
+    if ( $self->DOES('Taskwarrior::Kusarigama::Hook::OnCommand') ) {
         my $name = $self->command_name;
         if ( $self->tw->config->{report}{$name} ) {
             say "report '$name' already exist, skipping";

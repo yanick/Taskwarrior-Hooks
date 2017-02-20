@@ -61,6 +61,129 @@ documentation to do it manually or, again, use C<task-kusarigama>.
 
     $ task-kusarigama install
 
+=head2 Writing plugins
+
+The inner workings of the plugin system are fairly simple.
+
+The list of plugins we want to be active lives in the taskwarrior
+configuration under the key <kusarigama.plugins>. E.g.,
+
+    twhooks.plugins=Renew,Command::Before,Command::After,+FishCurrent
+
+Plugin namess prefixed with a plus sign are left left alone (minus the '+'),
+while the other ones get C<Taskwarrior::Kusarigama::Plugin::> prefixed to
+them.
+
+The Taskwarrior::Kusarigama system itself is invoked via the 
+scripts put in F<~/.task/hooks> by C<task-kusarigama>. The scripts
+detect in which stage they are called (launch, exit, add or modified),
+and execute all plugins that consume the associated role (e.g., 
+L<Taskwarrior::Kusarigama::Hook::OnLaunch>), in the order they have been 
+configured. 
+
+For example, this plugin will runs on a four hook stages:
+
+    package Taskwarrior::Kusarigama::Plugin::PrintStage;
+
+    use 5.10.0;
+
+    use strict;
+    use warnings;
+
+    use Moo;
+
+    extends 'Taskwarrior::Kusarigama::Plugin';
+
+    with 'Taskwarrior::Kusarigama::Hook::OnLaunch',
+         'Taskwarrior::Kusarigama::Hook::OnAdd',
+         'Taskwarrior::Kusarigama::Hook::OnModify',
+         'Taskwarrior::Kusarigama::Hook::OnExit';
+
+    sub on_launch { say "launch stage: ", __PACKAGE__; }
+    sub on_add    { say "add stage: ",    __PACKAGE__; }
+    sub on_modify { say "modify stage: ", __PACKAGE__; }
+    sub on_exit   { say "exit stage: ",   __PACKAGE__; }
+
+    1;
+
+=head3 The Fifth Column: Taskwarrior::Kusarigama::Hook::OnCommand
+
+Kusarigama defines a fifth hook role,
+L<Taskwarrior::Kusarigama::Hook::OnCommand>, to help creating
+custom commands. This role does two things: when
+C<task-kusarigama install> is run, it creates a dummy report
+such that Taskwarrior will accept C<task my_custom_command> as a 
+valid invocation, and then it runs as part of the C<launch>
+stage and will run the plugin code if the associated command was used.
+
+
+=head3 Adding custom fields to tasks
+
+Taskwarrior allows the creation of I<User-Defined Attributes> (UDAs). Plugins
+can implement a C<custom_uda> attribute that holds a hashref of 
+new UDAs and their description. Those UDAs will then be fed to Taskwarrior's
+config via C<task-kusarigama install>, and will thereafter be available like
+any other task field.
+
+For example, L<Taskwarrior::Kusarigama::Plugin::Renew> uses UDAs
+to identify tasks that should create a new, follow-up instance
+of themselves upon completion:
+
+    package Taskwarrior::Kusarigama::Plugin::Renew;
+
+    use strict;
+    use warnings;
+
+    use Clone 'clone';
+    use List::AllUtils qw/ any /;
+
+    use Moo;
+    use MooseX::MungeHas;
+
+    extends 'Taskwarrior::Kusarigama::Hook';
+
+    with 'Taskwarrior::Kusarigama::Hook::OnExit';
+
+    use experimental 'postderef';
+
+    has custom_uda => sub{ +{
+        renew => 'creates a follow-up task upon closing',
+        rdue  => 'next task due date',
+        rwait => 'next task wait period',
+    } };
+
+    sub on_exit {
+        my( $self, @tasks ) = @_;
+
+        return unless $self->command eq 'done';
+
+        my $renewed;
+
+        for my $task ( @tasks ) {
+            next unless any { $task->{$_} } qw/ renew rdue rwait /;
+            $renewed = 1;
+
+            my $new = clone($task);
+
+            delete $new->@{qw/ end modified entry status uuid /};
+
+            my $due = $new->{rdue};
+            $new->{due} = $self->calc($due) if $due;
+
+            my $wait = $new->{rwait};
+            $wait =~ s/due/$due/;
+            $new->{wait} = $self->calc($wait) if $wait;
+
+            $new->{status} = $wait ? 'waiting' : 'pending';
+
+            $self->import_task($new);
+        }
+
+        $self .= 'created follow-up tasks' if $renewed;
+    }
+
+    1;
+
 =head1 SEE ALSO
 
 =over
@@ -72,106 +195,3 @@ the original blog entry
 =back
 
 =cut
-
-use 5.10.0;
-
-use strict;
-use warnings;
-
-use Moo;
-use MooseX::MungeHas;
-
-use IPC::Run3;
-use Try::Tiny;
-use Path::Tiny;
-use Hash::Merge qw/merge /;
-use List::AllUtils qw/ reduce pairmap pairmap /;
-use JSON;
-
-use experimental 'postderef';
-
-with 'Taskwarrior::Kusarigama::Core';
-
-has raw_args => (
-    is => 'ro',
-    default => sub { +{} },
-    trigger => sub {
-       my( $self, $new ) = @_;
-      
-       pairmap { $self->$a($b) }
-        map { split ':', $_, 2 } @$new
-    },
-);
-
-has exit_on_failure => (
-    is => 'ro',
-    default => 1,
-);
-
-has config => sub {
-    run3 [qw/ task rc.verbose=nothing rc.hooks=off show /], undef, \my $output;
-    $output =~ s/^.*?---$//sm;
-    $output =~ s/^Some of your.*//mg;
-    $output =~ s/^\s+.*//mg;
-
-    reduce { merge( $a, $b ) } map { 
-        reduce { +{ $b => $a } } $_->[1], reverse split '\.', $_->[0]
-    } map { [split ' ', $_, 2] } grep { /\w/ } split "\n", $output;
-};
-
-sub run_event {
-    my( $self, $event ) = @_;
-
-    my $method = join '_', 'run', $event;
-
-    my @plugins = $self->plugins->@*;
-
-    my @tasks = map { from_json($_) } <STDIN>;
-
-    try {
-        $self->$method(\@plugins,@tasks);
-    }
-    catch {
-        say $_;
-        exit 1 if $self->exit_on_failure;
-    };
-}
-
-sub run_exit {
-    my( $self, $plugins, @tasks ) = @_;
-    $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnExit') } @$plugins;
-    say for $self->feedback->@*;
-}
-
-sub run_launch {
-    my( $self, $plugins, @tasks ) = @_;
-
-    for my $cmd ( grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnCommand') } @$plugins ) {
-        next unless $cmd->command_name eq $self->command;
-        $cmd->on_command(@tasks);
-        die sprintf "ran custom command '%s'\n", $cmd->command_name;
-    }
-
-    $_->on_launch(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnLaunch') } @$plugins;
-    say for $self->feedback->@*;
-}
-
-sub run_add {
-    my( $self, $plugins, $task ) = @_;
-    $_->on_add($task) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnAdd') } @$plugins;
-    say to_json($task);
-    say for $self->feedback->@*;
-}
-
-sub run_modify {
-    my( $self, $plugins, $old, $new ) = @_;
-    for( grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnModify') } @$plugins ) {
-        use Hash::Diff;
-        my $diff = Hash::Diff::diff( $old, $new );
-        $_->on_modify( $new, $old, $diff  );
-    }
-    say to_json($new);
-    say for $self->feedback->@*;
-}
-
-1;

@@ -1,0 +1,9 @@
+* aggregate the tools  under a  'twhooks install', 'twhooks commands'
+    'twhooks add Plugin'  'twhooks list'
+
+
+* read the command name from the package name
+
+* have special key to read all plugins within  the lib
+
+

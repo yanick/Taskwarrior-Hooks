@@ -1,32 +1,41 @@
 package Taskwarrior::Kusarigama;
-# ABSTRACT: Hook plugin system for the Taskwarrior task manager
+# ABSTRACT: plugin system for the Taskwarrior task manager
 
 =head1 SYNOPSIS
 
-    $ twhooks add GitCommit Command::Before Command::After
+    $ task-kusarigama add GitCommit Command::Before Command::After
 
-    $ twhooks install
+    $ task-kusarigama install
 
     # enjoy!
 
 =head1 DESCRIPTION
 
-This module provides a plugin-based way to run hooks for the 
+This module provides a plugin-based way to run hooks and custom
+commands for the 
 cli-based task manager L<Taskwarrior|http://taskwarrior.org/>.
 
 =head2 Configuring Taskwarrior to use Taskwarrior::Kusarigama
 
 =head3 Setting up the hooks
 
-First, you need to install hook scripts that will invoke C<Taskwarrior::Kusarigama>
-when C<task> is running. You can do that by either using the helper C<twhooks>:
+Taskwarrior's main method of customization is via hooks
+that are executed when the command is run, when it exits, and when
+tasks are modified or added. (see L<https://taskwarrior.org/docs/hooks.html>
+for the official documentation) C<Taskwarrior::Kusarigama> leverages this
+hook system to allow the creation of custom behaviors and commands.
 
-    $ twhooks install
+First, you need to install hook scripts that will invoke C<Taskwarrior::Kusarigama>
+when C<task> is running. You can do that by either using the helper C<task-kusarigama>:
+
+    $ task-kusarigama install
 
 Or dropping manually hook scripts in the F<~/.task/hooks> directory. The scripts
 should look like
 
     #!/usr/bin/env perl
+
+    # script '~/.task/hooks/on-launch-kusarigama.pl'
 
     use Taskwarrior::Kusarigama;
 
@@ -36,20 +45,31 @@ should look like
 
 =head3 Setting which plugins to use
 
-Then you need to tell the system with plugins to use, either via C<twhooks>
+Then you need to tell the system with plugins to use, 
+either via C<task-kusarigama>
 
-    $ twhooks add Command::After
+    $ task-kusarigama add Command::After
 
-or directly via the Taskwarriorconfig
+or directly via the Taskwarrior config command
 
-    $ task config  twhooks.plugins  Command::After
+    $ task config  task-kusarigama.plugins  Command::After
 
 =head3 Configure the plugins
 
 The last step is to configure the different plugins. Read their 
-documentation to do it manually or, again, use C<twhooks>.
+documentation to do it manually or, again, use C<task-kusarigama>.
 
-    $ twhooks install
+    $ task-kusarigama install
+
+=head1 SEE ALSO
+
+=over
+
+=item L<http://techblog.babyl.ca/entry/taskwarrior> 
+
+the original blog entry
+
+=back
 
 =cut
 

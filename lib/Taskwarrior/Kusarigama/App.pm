@@ -3,7 +3,16 @@ package Taskwarrior::Kusarigama::App;
 
 =head1 SYNOPSIS
 
-    $ twhooks help
+    $ task-kusarigama help
+
+=head1 DESCRIPTION
+
+C<task-kusarigama> helps modifying the configuration of 
+the local Taskwarrior instance to interact with 
+L<Taskwarrior::Kusarigama> plugins.
+
+See the documentation of L<Taskwarrior::Kusarigama>
+for the whole story.
 
 =cut
 

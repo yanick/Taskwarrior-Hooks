@@ -4,6 +4,7 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - Distro name is Taskwarrior-Kusarigama, not TW-Hooks (GH#1)
 
   [ DOCUMENTATION ]
 

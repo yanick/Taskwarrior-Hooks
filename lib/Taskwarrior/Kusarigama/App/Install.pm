@@ -1,27 +1,7 @@
 package Taskwarrior::Kusarigama::App::Install;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: install scripts and tweak config for Taskwarrior::Kusarigama
-
-=head1 SYNOPSIS
-
-    $ task-kusarigama install
-
-=head1 DESCRIPTION
-
-Do the few things required to make Taskwarrior uses L<Taskwarrior::Kusarigama>. Namely:
-
-=over
-
-=item * 
-
-Create the hook files "I<event>-kusarigama.pl" in F<~/.task/hooks> directory. If the files already exist, nothing is done.
-
-=item *
-
-Perform any installation action required by all the declared plugins.
-
-=back
-
-=cut
+$Taskwarrior::Kusarigama::App::Install::VERSION = '0.1.0';
 
 use 5.10.0;
 
@@ -91,3 +71,49 @@ END
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::App::Install - install scripts and tweak config for Taskwarrior::Kusarigama
+
+=head1 VERSION
+
+version 0.1.0
+
+=head1 SYNOPSIS
+
+    $ task-kusarigama install
+
+=head1 DESCRIPTION
+
+Do the few things required to make Taskwarrior uses L<Taskwarrior::Kusarigama>. Namely:
+
+=over
+
+=item * 
+
+Create the hook files "I<event>-kusarigama.pl" in F<~/.task/hooks> directory. If the files already exist, nothing is done.
+
+=item *
+
+Perform any installation action required by all the declared plugins.
+
+=back
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2016 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

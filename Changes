@@ -1,19 +1,14 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+0.1.0 2017-02-20
   [ BUG FIXES ]
-  - Distro name is Taskwarrior-Kusarigama, not TW-Hooks (GH#1)
-
-  [ DOCUMENTATION ]
+    - Distro name is Taskwarrior-Kusarigama, not TW-Hooks (GH#1)
 
   [ ENHANCEMENTS ]
-  - Adding 'Progress' plugin.
-
-  [ NEW FEATURES ]
+    - Adding 'Progress' plugin.
 
   [ STATISTICS ]
+    - code churn: 6 files changed, 119 insertions(+), 5 deletions(-)
 
 0.0.1 2017-02-20
   - First version, unleashed on an unsuspecting world.

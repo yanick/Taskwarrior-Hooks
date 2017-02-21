@@ -1,5 +1,7 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-
+0.0.1 2017-02-20
   - First version, unleashed on an unsuspecting world.
+
+  [ STATISTICS ]
+    - code churn: 2 files changed, 24 insertions(+), 24 deletions(-)

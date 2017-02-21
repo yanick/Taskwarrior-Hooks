@@ -1,15 +1,7 @@
 package Taskwarrior::Kusarigama::Core;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: Set of core functions interacting with Taskwarrior
-
-=head1 DESCRIPTION
-
-Role consumed by L<Taskwarrior::Kusarigama::Hook>. 
-
-=head1 METHODS
-
-The role provides the following methods:
-
-=cut
+$Taskwarrior::Kusarigama::Core::VERSION = '0.0.1';
 
 use strict;
 use warnings;
@@ -29,38 +21,16 @@ use experimental 'postderef';
 
 use namespace::clean;
 
-=head2 api
-
-=head2 version
-
-=head2 args
-
-=head2 command
-
-=head2 rc
-
-=head2 data
-
-=cut
 
 has $_ => (
     is => 'rw',
 ) for  qw/ api version args command rc data /;
 
-=head2 data_dir
-
-=cut
 
 has data_dir => sub {
     path( $_[0]->data );
 };
 
-=head2 plugins
-
-Returns an arrayref of instances of the plugins defined 
-under Taskwarrior's C<kusarigama.plugins> configuration key.
-
-=cut
 
 has plugins => sub {
     my $self = shift;
@@ -80,17 +50,6 @@ before plugins => sub {
         split ':', $self->config->{kusarigama}{lib};
 };
 
-=head2 export_tasks
-
-    my @tasks = $tw->export_tasks( @query );
-
-Equivalent to
-
-    $ task export ...query...
-
-Returns the list of the tasks.
-
-=cut
 
 sub export_tasks {
     my( $self, @query ) = @_;
@@ -100,15 +59,6 @@ sub export_tasks {
     return @{ from_json $out };
 }
 
-=head2 import_task
-
-    $tw->import_task( \%task  )
-
-Equivalent to
-
-    $ task import <json representation of %task>
-
-=cut
 
 sub import_task {
     my( $self, $task ) = @_;
@@ -118,15 +68,6 @@ sub import_task {
     run3 [qw/ task rc.recurrence=no import /], \$in;
 }
 
-=head2 calc
-
-    $result = $tw->calc( qw/ today + 3d / );
-
-Equivalent to
-
-    $ task calc today + 3d
-
-=cut
 
 sub calc {
     my( $self, @stuff ) = @_;
@@ -139,4 +80,82 @@ sub calc {
 
 1;
 
+__END__
 
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Core - Set of core functions interacting with Taskwarrior
+
+=head1 VERSION
+
+version 0.0.1
+
+=head1 DESCRIPTION
+
+Role consumed by L<Taskwarrior::Kusarigama::Hook>. 
+
+=head1 METHODS
+
+The role provides the following methods:
+
+=head2 api
+
+=head2 version
+
+=head2 args
+
+=head2 command
+
+=head2 rc
+
+=head2 data
+
+=head2 data_dir
+
+=head2 plugins
+
+Returns an arrayref of instances of the plugins defined 
+under Taskwarrior's C<kusarigama.plugins> configuration key.
+
+=head2 export_tasks
+
+    my @tasks = $tw->export_tasks( @query );
+
+Equivalent to
+
+    $ task export ...query...
+
+Returns the list of the tasks.
+
+=head2 import_task
+
+    $tw->import_task( \%task  )
+
+Equivalent to
+
+    $ task import <json representation of %task>
+
+=head2 calc
+
+    $result = $tw->calc( qw/ today + 3d / );
+
+Equivalent to
+
+    $ task calc today + 3d
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2016 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

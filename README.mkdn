@@ -1,26 +1,12 @@
-package Taskwarrior::Kusarigama;
-our $AUTHORITY = 'cpan:YANICK';
-# ABSTRACT: plugin system for the Taskwarrior task manager
-$Taskwarrior::Kusarigama::VERSION = '0.0.1';
-
-# TODO document the kusarigama.dir key
-1;
-
-__END__
-
-=pod
-
-=encoding UTF-8
-
-=head1 NAME
+# NAME
 
 Taskwarrior::Kusarigama - plugin system for the Taskwarrior task manager
 
-=head1 VERSION
+# VERSION
 
 version 0.0.1
 
-=head1 SYNOPSIS
+# SYNOPSIS
 
     $ task-kusarigama add GitCommit Command::Before Command::After
 
@@ -28,28 +14,28 @@ version 0.0.1
 
     # enjoy!
 
-=head1 DESCRIPTION
+# DESCRIPTION
 
 This module provides a plugin-based way to run hooks and custom
 commands for the 
-cli-based task manager L<Taskwarrior|http://taskwarrior.org/>.
+cli-based task manager [Taskwarrior](http://taskwarrior.org/).
 
-=head2 Configuring Taskwarrior to use Taskwarrior::Kusarigama
+## Configuring Taskwarrior to use Taskwarrior::Kusarigama
 
-=head3 Setting up the hooks
+### Setting up the hooks
 
 Taskwarrior's main method of customization is via hooks
 that are executed when the command is run, when it exits, and when
-tasks are modified or added. (see L<https://taskwarrior.org/docs/hooks.html>
-for the official documentation) C<Taskwarrior::Kusarigama> leverages this
+tasks are modified or added. (see [https://taskwarrior.org/docs/hooks.html](https://taskwarrior.org/docs/hooks.html)
+for the official documentation) `Taskwarrior::Kusarigama` leverages this
 hook system to allow the creation of custom behaviors and commands.
 
-First, you need to install hook scripts that will invoke C<Taskwarrior::Kusarigama>
-when C<task> is running. You can do that by either using the helper C<task-kusarigama>:
+First, you need to install hook scripts that will invoke `Taskwarrior::Kusarigama`
+when `task` is running. You can do that by either using the helper `task-kusarigama`:
 
     $ task-kusarigama install
 
-Or dropping manually hook scripts in the F<~/.task/hooks> directory. The scripts
+Or dropping manually hook scripts in the `~/.task/hooks` directory. The scripts
 should look like
 
     #!/usr/bin/env perl
@@ -62,10 +48,10 @@ should look like
         ->run_event( 'launch' ); # change with 'add', 'modify', 'exit' 
                                  # for the different scripts
 
-=head3 Setting which plugins to use
+### Setting which plugins to use
 
 Then you need to tell the system with plugins to use, 
-either via C<task-kusarigama>
+either via `task-kusarigama`
 
     $ task-kusarigama add Command::After
 
@@ -73,14 +59,14 @@ or directly via the Taskwarrior config command
 
     $ task config  task-kusarigama.plugins  Command::After
 
-=head3 Configure the plugins
+### Configure the plugins
 
 The last step is to configure the different plugins. Read their 
-documentation to do it manually or, again, use C<task-kusarigama>.
+documentation to do it manually or, again, use `task-kusarigama`.
 
     $ task-kusarigama install
 
-=head2 Writing plugins
+## Writing plugins
 
 The inner workings of the plugin system are fairly simple.
 
@@ -90,14 +76,14 @@ configuration under the key <kusarigama.plugins>. E.g.,
     kusarigama.plugins=Renew,Command::Before,Command::After,+FishCurrent
 
 Plugin namess prefixed with a plus sign are left left alone (minus the '+'),
-while the other ones get C<Taskwarrior::Kusarigama::Plugin::> prefixed to
+while the other ones get `Taskwarrior::Kusarigama::Plugin::` prefixed to
 them.
 
 The Taskwarrior::Kusarigama system itself is invoked via the 
-scripts put in F<~/.task/hooks> by C<task-kusarigama>. The scripts
+scripts put in `~/.task/hooks` by `task-kusarigama`. The scripts
 detect in which stage they are called (launch, exit, add or modified),
 and execute all plugins that consume the associated role (e.g., 
-L<Taskwarrior::Kusarigama::Hook::OnLaunch>), in the order they have been 
+[Taskwarrior::Kusarigama::Hook::OnLaunch](https://metacpan.org/pod/Taskwarrior::Kusarigama::Hook::OnLaunch)), in the order they have been 
 configured. 
 
 For example, this plugin will runs on a four hook stages:
@@ -125,25 +111,25 @@ For example, this plugin will runs on a four hook stages:
 
     1;
 
-=head3 The Fifth Column: Taskwarrior::Kusarigama::Hook::OnCommand
+### The Fifth Column: Taskwarrior::Kusarigama::Hook::OnCommand
 
 Kusarigama defines a fifth hook role,
-L<Taskwarrior::Kusarigama::Hook::OnCommand>, to help creating
+[Taskwarrior::Kusarigama::Hook::OnCommand](https://metacpan.org/pod/Taskwarrior::Kusarigama::Hook::OnCommand), to help creating
 custom commands. This role does two things: when
-C<task-kusarigama install> is run, it creates a dummy report
-such that Taskwarrior will accept C<task my_custom_command> as a 
-valid invocation, and then it runs as part of the C<launch>
+`task-kusarigama install` is run, it creates a dummy report
+such that Taskwarrior will accept `task my_custom_command` as a 
+valid invocation, and then it runs as part of the `launch`
 stage and will run the plugin code if the associated command was used.
 
-=head3 Adding custom fields to tasks
+### Adding custom fields to tasks
 
-Taskwarrior allows the creation of I<User-Defined Attributes> (UDAs). Plugins
-can implement a C<custom_uda> attribute that holds a hashref of 
+Taskwarrior allows the creation of _User-Defined Attributes_ (UDAs). Plugins
+can implement a `custom_uda` attribute that holds a hashref of 
 new UDAs and their description. Those UDAs will then be fed to Taskwarrior's
-config via C<task-kusarigama install>, and will thereafter be available like
+config via `task-kusarigama install`, and will thereafter be available like
 any other task field.
 
-For example, L<Taskwarrior::Kusarigama::Plugin::Renew> uses UDAs
+For example, [Taskwarrior::Kusarigama::Plugin::Renew](https://metacpan.org/pod/Taskwarrior::Kusarigama::Plugin::Renew) uses UDAs
 to identify tasks that should create a new, follow-up instance
 of themselves upon completion:
 
@@ -202,9 +188,9 @@ of themselves upon completion:
 
     1;
 
-=head3 Aborting the pipeline
+### Aborting the pipeline
 
-Any plugin can abort the taskwarrior process by simply C<die>ing.
+Any plugin can abort the taskwarrior process by simply `die`ing.
 
     sub on_add {
         my( $self, $task ) = @_;
@@ -213,25 +199,19 @@ Any plugin can abort the taskwarrior process by simply C<die>ing.
             if $task->{project} eq 'work' and not $task->{jira};
     }
 
-=head1 SEE ALSO
+# SEE ALSO
 
-=over
+- [http://techblog.babyl.ca/entry/taskwarrior](http://techblog.babyl.ca/entry/taskwarrior) 
 
-=item L<http://techblog.babyl.ca/entry/taskwarrior> 
+    the original blog entry
 
-the original blog entry
+# AUTHOR
 
-=back
+Yanick Champoux <yanick@cpan.org> [![endorse](http://api.coderwall.com/yanick/endorsecount.png)](http://coderwall.com/yanick)
 
-=head1 AUTHOR
-
-Yanick Champoux <yanick@cpan.org>
-
-=head1 COPYRIGHT AND LICENSE
+# COPYRIGHT AND LICENSE
 
 This software is copyright (c) 2016 by Yanick Champoux.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
-
-=cut

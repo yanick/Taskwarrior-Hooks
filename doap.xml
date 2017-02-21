@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Project
+  xmlns="http://usefulinc.com/ns/doap#"
+  xmlns:dc="http://purl.org/dc/terms/"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  >
+  <name>Taskwarrior-Hooks</name>
+  <shortdesc>plugin system for the Taskwarrior task manager</shortdesc>
+  <developer>
+    <foaf:Person>
+      <foaf:name>Yanick Champoux</foaf:name>
+      <foaf:mbox rdf:resource="mailto:yanick@cpan.org" />
+    </foaf:Person>
+  </developer>
+  <license rdf:resource="http://dev.perl.org/licenses/" />
+  <homepage rdf:resource="https://github.com/yanick/Taskwarrior-Kusarigami" />
+  <bug-database rdf:resource="https://github.com/yanick/Taskwarrior-Kusarigami/issues" />
+  <repository>
+    <GitRepository>
+      <browse rdf:resource="https://github.com/yanick/Taskwarrior-Kusarigami" />
+      <location rdf:resource="https://github.com/yanick/Taskwarrior-Kusarigami.git" />
+    </GitRepository>
+  </repository>
+  <programming-language>Perl</programming-language>
+</Project>

@@ -33,6 +33,15 @@ the Taskwarrior hook lifecycle.
 
 Requires that a C<on_launch> is implemented.
 
+The C<on_launch> method, when invoked, will be
+given the list of tasks associated with the command.
+
+    sub on_launch {
+        my( $self, @tasks ) = @_;
+
+        ...
+    }
+
 =cut
 
 

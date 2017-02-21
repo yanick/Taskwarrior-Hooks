@@ -33,4 +33,15 @@ the Taskwarrior hook lifecycle.
 
 Requires that a C<on_modify> is implemented.
 
+The C<on_modify> method, when invoked, will be
+given the new version of the task, the previous version,
+and the delta as calculated by 
+L<Hash::Diff>'s c<diff> function.
+
+    sub on_modify {
+        my( $self, $new_task, $old_task, $diff ) = @_;
+
+        ...
+    }
+
 =cut

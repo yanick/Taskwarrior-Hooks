@@ -24,6 +24,15 @@ the Taskwarrior hook lifecycle.
 
 Requires that a C<on_add> is implemented.
 
+The C<on_add> method, when invoked, will be
+given the newly created task associated with the command.
+
+    sub on_add {
+        my( $self, $task ) = @_;
+
+        ...
+    }
+
 =cut
 
 use strict;

@@ -27,6 +27,15 @@ the Taskwarrior hook lifecycle.
 
 Requires that a C<on_exit> is implemented.
 
+The C<on_exit> method, when invoked, will be
+given the list of tasks associated with the command.
+
+    sub on_exit {
+        my( $self, @tasks ) = @_;
+
+        ...
+    }
+
 =cut
 
 use Moo::Role;

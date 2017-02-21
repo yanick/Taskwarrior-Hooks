@@ -1,5 +1,17 @@
 package Taskwarrior::Kusarigama::Plugin::SingleActive;
 
+=head1 DESCRIPTION
+
+Assures that only one task is active.
+
+Basically, runs
+
+    task +ACTIVE +PENDING stop
+
+before any call to C<task start>. 
+
+=cut
+
 use strict;
 use warnings;
 

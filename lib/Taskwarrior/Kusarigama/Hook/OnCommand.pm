@@ -9,7 +9,10 @@ use Moo::Role;
 has command_name => (
     is => 'ro',
     default => sub {
-        lc ref($_[0]) =~ s/^.*::Command:://r;
+        lc(
+            ( lcfirst ref($_[0]) =~ s/^.*::Command:://r )
+                =~ s/(?=[A-Z])/-/gr
+        );
     },
 );
 

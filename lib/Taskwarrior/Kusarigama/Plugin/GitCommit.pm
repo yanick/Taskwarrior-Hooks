@@ -1,4 +1,15 @@
 package Taskwarrior::Kusarigama::Plugin::GitCommit;
+# ABSTRACT: turns the task repo into a git repository
+
+=head1 DESCRIPTION
+
+Turns the F<~/.task> directory into a git repository, and
+commits the state after every command. 
+
+Fair warning: the git repo tends to grow quite a bit over time,
+so keep an eye on it.
+
+=cut
 
 use strict;
 use warnings;

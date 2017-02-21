@@ -19,17 +19,6 @@ package Taskwarrior::Kusarigama::Plugin;
 
 Base class for all Taskwarrior::Kusarigama plugins.
 
-=head2 OVERLOADING
-
-The string concatenation is overloading as a call
-to C<add_feedback>.
-
-    $plugin .= 'some feedback';
-
-    # equivalent to
-
-    $plugin->add_feedback( 'some feedback' );
-
 =head2 METHODS
 
 =cut
@@ -41,14 +30,6 @@ use warnings;
 
 use Moo;
 use MooseX::MungeHas;
-
-use overload 
-    fallback => 1,
-    '.' => sub {
-        my( $self, $other, $reversed ) = @_;
-        $self->add_feedback($other);
-        $self;
-    };
 
 =head3 new
 

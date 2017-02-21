@@ -55,15 +55,6 @@ has data_dir => sub {
     path( $_[0]->data );
 };
 
-=head2 feedback
-
-=cut
-
-has feedback => (
-    is => 'rw',
-    default => sub { [] },
-);
-
 =head2 plugins
 
 Returns an arrayref of instances of the plugins defined 
@@ -88,19 +79,6 @@ before plugins => sub {
         map { s/^\./$self->data_dir/er }
         split ':', $self->config->{kusarigama}{lib};
 };
-
-=head2 add_feedback
-
-    $tw->add_feeback( $message );
-
-Add an output line to be returned to the end-user.
-
-=cut
-
-sub add_feedback {
-    my $self = shift;
-    push $self->feedback->@*, @_;
-}
 
 =head2 export_tasks
 

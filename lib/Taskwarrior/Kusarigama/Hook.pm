@@ -147,7 +147,6 @@ Runs the exit stage part of the plugins.
 sub run_exit {
     my( $self, $plugins, @tasks ) = @_;
     $_->on_exit(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnExit') } @$plugins;
-    say for $self->feedback->@*;
 }
 
 =head2 run_launch
@@ -169,7 +168,6 @@ sub run_launch {
     }
 
     $_->on_launch(@tasks) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnLaunch') } @$plugins;
-    say for $self->feedback->@*;
 }
 
 =head2 run_add
@@ -184,7 +182,6 @@ sub run_add {
     my( $self, $plugins, $task ) = @_;
     $_->on_add($task) for grep { $_->DOES('Taskwarrior::Kusarigama::Hook::OnAdd') } @$plugins;
     say to_json($task);
-    say for $self->feedback->@*;
 }
 
 =head2 run_modify
@@ -205,7 +202,6 @@ sub run_modify {
         $_->on_modify( $new, $old, $diff  );
     }
     say to_json($new);
-    say for $self->feedback->@*;
 }
 
 1;

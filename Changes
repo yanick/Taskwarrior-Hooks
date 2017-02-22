@@ -4,6 +4,7 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - No hard-requirement on Git::Repository. (GH#6)
 
   [ DOCUMENTATION ]
 

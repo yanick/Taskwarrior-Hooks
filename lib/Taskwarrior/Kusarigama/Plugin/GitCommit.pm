@@ -15,14 +15,14 @@ use strict;
 use warnings;
 
 use Module::Runtime qw/ use_module /;
+# TODO use Git::Wrapper instead
+use Git::Repository;
 
 use Moo;
 
 extends 'Taskwarrior::Kusarigama::Hook';
 
 with 'Taskwarrior::Kusarigama::Hook::OnExit';
-
-use Git::Repository;
 
 sub on_exit {
     my $self = shift;

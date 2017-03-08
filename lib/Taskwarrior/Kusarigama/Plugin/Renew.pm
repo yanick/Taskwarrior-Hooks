@@ -1,34 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::Renew;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: create a follow-up task upon completion
-
-=head SYNOPSIS
-
-    $ task add water the plants rdue:now+5d rwait:now+4d
-
-=head1 DESCRIPTION
-
-The native recurring tasks in Taskwarrior create
-new tasks after a given lapse of time, no matter if
-the already-existing task was completed or not.
-
-This type of recurrence will create a new instance
-of the task upon the completion of the previous one.
-This is useful for tasks where having hard-set
-periods don't make sense (think 'watering the plants').
-
-Note that no susbequent task is created if a task
-is deleted instead of completed.
-
-The plugin creates 3 new UDAs. C<renew>, a boolean
-indicating that the task should be renewing, C<rdue>, 
-the formula for the new due date and C<rwait>, the formula for the
-date at which the 
-new task should be unhidden. 
-
-C<rdue> is required, and C<renew> 
-and C<rwait> are both optional.
-
-=cut
+$Taskwarrior::Kusarigama::Plugin::Renew::VERSION = '0.2.0';
 
 use 5.10.0;
 use strict;
@@ -85,3 +58,56 @@ sub on_exit {
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Plugin::Renew - create a follow-up task upon completion
+
+=head1 VERSION
+
+version 0.2.0
+
+=head1 DESCRIPTION
+
+The native recurring tasks in Taskwarrior create
+new tasks after a given lapse of time, no matter if
+the already-existing task was completed or not.
+
+This type of recurrence will create a new instance
+of the task upon the completion of the previous one.
+This is useful for tasks where having hard-set
+periods don't make sense (think 'watering the plants').
+
+Note that no susbequent task is created if a task
+is deleted instead of completed.
+
+The plugin creates 3 new UDAs. C<renew>, a boolean
+indicating that the task should be renewing, C<rdue>, 
+the formula for the new due date and C<rwait>, the formula for the
+date at which the 
+new task should be unhidden. 
+
+C<rdue> is required, and C<renew> 
+and C<rwait> are both optional.
+
+=head SYNOPSIS
+
+    $ task add water the plants rdue:now+5d rwait:now+4d
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2016 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

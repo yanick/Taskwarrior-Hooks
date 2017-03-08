@@ -125,10 +125,8 @@ sub RUN($self,$cmd,@args) {
     
 }
 
-sub _map_to_arg ( $self, $entry, $filter=0 ) {
+sub _map_to_arg ( $self, $entry ) {
     return $entry unless ref $entry eq 'HASH';
-
-    my $sep = $filter ? '=' : ':';
 
     return pairmap { join( ( $a =~ /^rc/ ? '=' : ':' ), $a, $b ) } %$entry;
 }

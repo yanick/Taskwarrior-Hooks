@@ -4,18 +4,26 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
-  - No hard-requirement on Git::Repository. (GH#6)
 
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
-  - Added Taskwarrior::Kusarigama::Wrapper.
-  - Rework for the Progress plugin.
-  - Add functionality to the ::Core role.
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.2.0 2017-03-07
+  [ BUG FIXES ]
+    - No hard-requirement on Git::Repository. (GH#6)
+
+  [ ENHANCEMENTS ]
+    - Added Taskwarrior::Kusarigama::Wrapper.
+    - Rework for the Progress plugin.
+    - Add functionality to the ::Core role.
+
+  [ STATISTICS ]
+    - code churn: 11 files changed, 365 insertions(+), 19 deletions(-)
 
 0.1.0 2017-02-20
   [ BUG FIXES ]

@@ -47,12 +47,86 @@ has $_ => (
     is => 'rw',
 ) for  qw/ api version args command rc data /;
 
+=head2 pre_command_args
+
+Returns the arguments that preceding the command as a string.
+
+
+    # assuming `task this and that foo` was run, and the command is 'foo'
+
+    $tw->pre_command_args; # => 'this and that'
+
+Note that because the way the hooks get the arguments, there is no way to
+distinguish between
+
+    task 'this and that' foo
+
+and
+
+    task this and that foo
+
+=cut
+
+has pre_command_args => sub {
+    my $self = shift;
+    my $command = $self->command;
+
+    my $args = $self->args;
+    $args =~ s/^task\s+//;
+
+    while() {
+        return $1 if $args =~ /(.*?)\s*\b$command\b/;
+
+        # command can be abbreviated
+        chop $command;
+    }
+
+};
+
+=head2 post_command_args
+
+Returns the arguments that follow the command as a string.
+
+
+    # assuming `task this and that foo sumfin` was run, and the command is 'foo'
+
+    $tw->post_command_args; # => 'sumfin'
+
+=cut
+
+has post_command_args => sub {
+    my $self = shift;
+    my $command = $self->command;
+
+    my $args = $self->args;
+    $args =~ s/^task\s+//;
+
+    while() {
+        return $1 if $args =~ /\b$command\b\s*(.*)/;
+
+        # command can be abbreviated
+        chop $command;
+    }
+
+};
+
 =head2 data_dir
 
 =cut
 
 has data_dir => sub {
     path( $_[0]->data );
+};
+
+=head2 run_task
+
+Returns a L<Taskwarrior::Kusarigama::Wrapper> object.
+
+=cut
+
+has run_task => sub {
+    require Taskwarrior::Kusarigama::Wrapper;
+    Taskwarrior::Kusarigama::Wrapper->new;
 };
 
 =head2 plugins

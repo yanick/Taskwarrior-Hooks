@@ -9,6 +9,7 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Added Taskwarrior::Kusarigama::Wrapper.
 
   [ NEW FEATURES ]
 

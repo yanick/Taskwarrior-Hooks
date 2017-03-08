@@ -1,3 +1,4 @@
 /Taskwarrior-Hooks*
 .build
 Taskwarrior-K*
+.envrc

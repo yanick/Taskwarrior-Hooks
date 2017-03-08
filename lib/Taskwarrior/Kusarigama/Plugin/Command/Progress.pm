@@ -59,6 +59,8 @@ sub on_add {
 sub on_modify {
     my( $self, $task ) = @_;
 
+    no warnings 'uninitialized';
+
     my $goal = $task->{goal} or return;
 
     my $progress = $task->{progress};
@@ -72,27 +74,30 @@ sub on_modify {
 sub on_command {
     my $self = shift;
 
-    my $args = $self->args;
+    # only grab goal'ed tasks
+    my @tasks = $self->run_task->export( $self->pre_command_args, { 'goal.any' => '' } );
 
-    my( $task ) = $self->export_tasks( $args =~ m/task\s+(\d+)/g );
+    die "no tasks found\n" unless @tasks;
 
-    die "task not found\n" unless $task;
-
-    $args =~ /progress\s*(=?)(-?\d*)\s*$/ or return;
+    my $note = $self->post_command_args =~ s/\s*(=?)(-?\d*)\s*//r;
 
     no warnings 'uninitialized';
-    my $progress = $1 ? $2 : ($2||1) + $task->{progress};
-    my $goal = $task->{goal} || 1;
+    for my $task ( @tasks ) {
+        my $progress = $1 ? $2 : ($2||1) + $task->{progress};
+        my $goal = $task->{goal};
 
-    my $ratio = $progress / $goal;
+        my $ratio = $progress / $goal;
 
-    print '=' x ( 20 * $ratio ), '-' x ( 20 * ( 1 - $ratio ) ), ' ', $progress, '/', $goal, "\n";
+        print $task->{id}, ' ', '=' x ( 20 * $ratio ), '-' x ( 20 * ( 1 - $ratio ) ), ' ', $progress, '/', $goal, "\n";
 
-    system 'task', $task->{id}, 'mod', 'progress='.$progress;
-
-    if ( $progress >= $task->{goal} ) {
-        system 'task', $task->{id}, 'done';
+        my $id = $task->{uuid};
+        $self->run_task->mod( [ $id ], { progress => $progress } );
+        $self->run_task->annotate( [ $id ], $note ) if $note;
+        if ( $progress >= $task->{goal} ) {
+            $self->run_task->done( [ $id ] );
+        }
     }
+
 };
 
 1;

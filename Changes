@@ -9,6 +9,9 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - Added Taskwarrior::Kusarigama::Wrapper.
+  - Rework for the Progress plugin.
+  - Add functionality to the ::Core role.
 
   [ NEW FEATURES ]
 

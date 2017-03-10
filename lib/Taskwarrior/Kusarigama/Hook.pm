@@ -8,7 +8,7 @@ package Taskwarrior::Kusarigama::Hook;
     use Taskwarrior::Kusarigama::Hook;
 
     Taskwarrior::Kusarigama::Hook->new(
-        raw_args => @ARGV
+        raw_args => \@ARGV
     )->run_event( 'launch' );
 
 =head1 DESCRIPTION

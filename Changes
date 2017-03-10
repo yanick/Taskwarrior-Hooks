@@ -4,13 +4,13 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
-    - GitCommit: Use the command-line as the git commit message. (GH#13, Paul Fenwick)
     - GitCommit: Extend `Plugin` rather than just `Hook`. (GH#12, Paul Fenwick)
 
   [ DOCUMENTATION ]
     - Hook.pm: Fixed missing backslash in documentation. (GH#11, Paul Fenwick)
 
   [ ENHANCEMENTS ]
+    - GitCommit: Use the command-line as the git commit message. (GH#13, Paul Fenwick)
 
   [ NEW FEATURES ]
 

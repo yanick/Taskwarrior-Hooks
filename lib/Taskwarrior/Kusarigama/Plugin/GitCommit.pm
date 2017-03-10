@@ -20,7 +20,7 @@ use Git::Repository;
 
 use Moo;
 
-extends 'Taskwarrior::Kusarigama::Hook';
+extends 'Taskwarrior::Kusarigama::Plugin';
 
 with 'Taskwarrior::Kusarigama::Hook::OnExit';
 

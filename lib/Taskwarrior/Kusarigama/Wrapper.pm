@@ -34,8 +34,8 @@ For example:
 
 =head2 export
 
-As a convenience, C<export> returns the list of tasks exported (as hashref)
-instead than as raw text.
+As a convenience, C<export> returns the list of tasks exported (as 
+L<Taskwarrior::Kusarigama::Task> objects) instead than as raw text.
 
 =cut
 
@@ -44,6 +44,8 @@ use 5.20.0;
 use IPC::Open3      qw();
 use Symbol;
 use  Taskwarrior::Kusarigama::Wrapper::Exception;
+use  Taskwarrior::Kusarigama::Task;
+
 use List::Util qw/ pairmap /;
 
 use Moo;
@@ -143,7 +145,9 @@ sub export {
     my( $self, @args ) = @_;
     require JSON;
 
-    return JSON::from_json( join '', $self->RUN( export => @args ) )->@*;
+    return map {
+        Taskwarrior::Kusarigama::Task->new( $self => $_ )
+    } JSON::from_json( join '', $self->RUN( export => @args ) )->@*;
 }
 
 sub AUTOLOAD {

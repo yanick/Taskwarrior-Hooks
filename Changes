@@ -11,6 +11,8 @@ Revision history for Taskwarrior-Hooks
 
   [ ENHANCEMENTS ]
     - GitCommit: Use the command-line as the git commit message. (GH#13, Paul Fenwick)
+    - Added Taskwarrior::Kusarigama::Task, applying
+        Taskwarrior::Kusarigama::Wrapper per task (GH#10).
 
   [ NEW FEATURES ]
 

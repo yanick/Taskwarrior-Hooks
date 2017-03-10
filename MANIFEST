@@ -34,6 +34,7 @@ lib/Taskwarrior/Kusarigama/Plugin/GitCommit.pm
 lib/Taskwarrior/Kusarigama/Plugin/ProjectAlias.pm
 lib/Taskwarrior/Kusarigama/Plugin/Renew.pm
 lib/Taskwarrior/Kusarigama/Plugin/SingleActive.pm
+lib/Taskwarrior/Kusarigama/Task.pm
 lib/Taskwarrior/Kusarigama/Wrapper.pm
 lib/Taskwarrior/Kusarigama/Wrapper/Exception.pm
 misc/autocomplete.fish
@@ -41,5 +42,6 @@ misc/graph.pl
 t/00-compile.t
 t/00-report-prereqs.dd
 t/00-report-prereqs.t
+t/task.t
 t/wrapper.t
 xt/release/unused-vars.t

@@ -43,7 +43,7 @@ sub on_exit {
     return unless $git->run( 'status', '--short' );
 
     $git->run( 'add', '.' );
-    $git->run( 'commit', '--message', 'on-exit saving' );
+    $git->run( 'commit', '--message', $self->args );
 
     $lock->release;
 };

@@ -4,19 +4,32 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
-    - GitCommit: Extend `Plugin` rather than just `Hook`. (GH#12, Paul Fenwick)
 
   [ DOCUMENTATION ]
-    - Hook.pm: Fixed missing backslash in documentation. (GH#11, Paul Fenwick)
 
   [ ENHANCEMENTS ]
-    - GitCommit: Use the command-line as the git commit message. (GH#13, Paul Fenwick)
-    - Added Taskwarrior::Kusarigama::Task, applying
-        Taskwarrior::Kusarigama::Wrapper per task (GH#10).
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.3.0 2017-03-10
+  [ BUG FIXES ]
+    - GitCommit: Extend `Plugin` rather than just `Hook`. (GH#12, Paul
+      Fenwick)
+
+  [ DOCUMENTATION ]
+    - Hook.pm: Fixed missing backslash in documentation. (GH#11, Paul
+      Fenwick)
+
+  [ ENHANCEMENTS ]
+    - GitCommit: Use the command-line as the git commit message. (GH#13,
+      Paul Fenwick)
+    - Added Taskwarrior::Kusarigama::Task, applying
+      Taskwarrior::Kusarigama::Wrapper per task (GH#10).
+
+  [ STATISTICS ]
+    - code churn: 8 files changed, 157 insertions(+), 12 deletions(-)
 
 0.2.0 2017-03-07
   [ BUG FIXES ]

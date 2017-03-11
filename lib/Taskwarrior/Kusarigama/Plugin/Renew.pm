@@ -22,11 +22,29 @@ is deleted instead of completed.
 The plugin creates 3 new UDAs. C<renew>, a boolean
 indicating that the task should be renewing, C<rdue>, 
 the formula for the new due date and C<rwait>, the formula for the
-date at which the 
-new task should be unhidden. 
+date at which the new task should be unhidden. 
 
 C<rdue> is required, and C<renew> 
 and C<rwait> are both optional.
+
+Since the waiting period is often dependent on the due value,
+as a convenience if the string C<due> is found in C<rwait>,
+it will be substitued by the C<rdue> value. So
+
+    $ task add rdue:now+1week rwait:-3days+due Do Laundry
+
+    # equivalent to
+
+    $ task add rdue:now+1week rwait:now+1week-3days Do Laundry
+
+Why C<-3days+due> and not C<due-3days>? Because it seems that
+C<task> does some weeeeeird parsing with C<due>. 
+
+    $ task add project:due-b Do Laundry
+    Cannot subtract strings
+
+(see L<https://bug.tasktools.org/browse/TW-1900>)
+
 
 =cut
 

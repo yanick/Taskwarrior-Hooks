@@ -4,6 +4,8 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - Don't try to compile GitCommit plugin, as we don't
+    hard-require Git::Repository to be installed.
 
   [ DOCUMENTATION ]
 

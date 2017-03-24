@@ -1,5 +1,30 @@
 package Taskwarrior::Kusarigama::Hook::OnAdd;
+our $AUTHORITY = 'cpan:YANICK';
 #ABSTRACT: Role for plugins running during the task creation stage
+$Taskwarrior::Kusarigama::Hook::OnAdd::VERSION = '0.3.1';
+
+use strict;
+use warnings;
+
+use Moo::Role;
+
+requires 'on_add';
+
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Hook::OnAdd - Role for plugins running during the task creation stage
+
+=head1 VERSION
+
+version 0.3.1
 
 =head1 SYNOPSIS
 
@@ -33,18 +58,15 @@ given the newly created task associated with the command.
         ...
     }
 
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2016 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
 =cut
-
-use strict;
-use warnings;
-
-use Moo::Role;
-
-requires 'on_add';
-
-1;
-
-
-
-
-

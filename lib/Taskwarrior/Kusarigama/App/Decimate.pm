@@ -1,34 +1,17 @@
-package Taskwarrior::Kusarigama::App::Review;
-# ABSTRACT: interactive review of unprioritized tasks
+package Taskwarrior::Kusarigama::App::Decimate;
+# ABSTRACT: interactively re-prioritize tasks
 
 =head1 SYNOPSIS
 
-    $ task-kusarigama review
+    $ task-kusarigama decimate
 
 =head1 DESCRIPTION
 
-Interactive review of tasks. 
-
-The command gathers all the tasks that are not proritized and
-display them one by one, providing a menu of actions to do.
-
-
-    Key   Name       Description
-    h     h          high priority
-    H     H          high priority and next
-    m     m          med priority
-    M     M          med priority and next
-    l     l          low priority
-    L     L          low priority and next
-    .     mod        generic modification
-    ,     append     append
-    d     done
-    D     delete
-    w     wait
-    q     quit
-    a     annotate
-    n     next       next
-    ?     help       List available commands
+This command helps re-prioritize tasks. It assumes that we want
+10% of the tasks as high priority, 60% as medium  priority, and the remaining 30% as
+low priority. If the distribution of the tasks does not match those proportions,
+it will show 10 tasks of the category that has too many tasks, and ask you to pick
+one to be promoted/demoted.
 
 =cut
 
@@ -83,7 +66,7 @@ sub nbr_prioritized_tasks($self) {
     return sum map { scalar $self->tasks->{$_}->@* } qw/ H M L /;
 }
 
-sub decimate($self) {
+sub run($self) {
     $self->decimate_group( 0.10, 'H', 'M' );
     $self->clear_tasks;
     $self->decimate_group( 0.60, 'M', 'L' );
@@ -147,89 +130,6 @@ sub pick_decimate($self, $tasks ) {
     @$tasks = grep { $_->{uuid} ne $contenders[$action]->{uuid} } @$tasks;
 
     return $contenders[$action];
-}
-
-sub run {
-    my $self = shift;
-
-    return $self->decimate if $self->subcommand eq 'decimate';
-
-    while ( my $next = eval { shift $self->tasks->{U}->@* } ) {
-        cls;
-        $self->print_summary_line;
-
-        while() {
-            say join "\n", $self->tw->info( $next->{uuid} );
-
-            my $action = $self->menu_prompt( prompt => "whatcha gonna do?",
-                case_insensitive => 0,
-                options => [
-                    { name => 'h', doc => 'high priority', keys => [ 'h' ] },
-                    { name => 'H', doc => 'high priority and next', keys => [ 'H' ] },
-                    { name => 'm', doc => 'med priority', keys => [ 'm' ] },
-                    { name => 'M', doc => 'med priority and next', keys => [ 'M' ] },
-                    { name => 'l', doc => 'low priority', keys => [ 'l' ] },
-                    { name => 'L', doc => 'low priority and next', keys => [ 'L' ] },
-                    { name => 'mod', doc => 'generic modification', keys => [ '.' ] },
-                    { name => 'append', doc => 'append', keys => [ ',' ] },
-                    { name => 'done', keys => [ 'd' ] },
-                    { name => 'delete', keys => [ 'D' ] },
-                    { name => 'wait', keys => [ 'w' ] },
-                    { name => 'quit', keys => [ 'q' ] },
-                    { name => 'annotate', keys => [ 'a' ] },
-                    { name => 'next', doc => 'next', keys => [ 'n' ] },
-                ],
-                help_keys => [ '?' ],
-            );
-
-            if ( $action eq 'quit' ) {
-                say "no, come back!";
-                return;
-            }
-
-            if ( $action eq 'annotate' ) {
-                $next->annotate( prompt 'note' );
-            }
-            elsif ( $action eq 'wait' ) {
-                $self->wait_menu($next);
-                last;
-            }
-            if( $action =~ /^[hml]$/i ) {
-                if ( $action  eq uc $action ) {
-                    $self->async_do(sub{
-                        $next->mod( 'priority:' . uc $action );
-                    });
-                }
-                else {
-                    $next->mod( 'priority:' . uc $action );
-                }
-            }
-            elsif ( $action eq 'mod' ) {
-                $next->mod( prompt "mod" );
-            }
-            elsif ( $action eq 'append' ) {
-                $next->append( prompt "append" );
-            }
-            elsif ( $action eq 'done' ) {
-                $self->async_do(sub{ $next->done; });
-                last;
-            }
-            elsif ( $action eq 'delete' ) {
-                # TODO I think it fails because underneath it tries to ask
-                # interactively if deleting is okay
-                $next->delete( { 'rc.confirmation' => 'no' } );
-                last;
-            }
-
-
-            last if $action eq 'next' or $action eq uc $action;
-        }
-
-
-    }
-
-    say "congrats! no task left unprioritized!";
-
 }
 
 sub wait_menu($self,$task) {

@@ -1,5 +1,5 @@
 package Taskwarrior::Kusarigama::App::Review;
-# ABSTRACT: weekly review of tasks
+# ABSTRACT: interactive review of unprioritized tasks
 
 =head1 SYNOPSIS
 
@@ -7,7 +7,28 @@ package Taskwarrior::Kusarigama::App::Review;
 
 =head1 DESCRIPTION
 
-Interactive review of tasks.
+Interactive review of tasks. 
+
+The command gathers all the tasks that are not proritized and
+display them one by one, providing a menu of actions to do.
+
+
+    Key   Name       Description
+    h     h          high priority
+    H     H          high priority and next
+    m     m          med priority
+    M     M          med priority and next
+    l     l          low priority
+    L     L          low priority and next
+    .     mod        generic modification
+    ,     append     append
+    d     done
+    D     delete
+    w     wait
+    q     quit
+    a     annotate
+    n     next       next
+    ?     help       List available commands
 
 =cut
 
@@ -18,16 +39,20 @@ use warnings;
 
 use Taskwarrior::Kusarigama::Wrapper;
 use List::UtilsBy qw/ partition_by /;
-use Term::ANSIColor qw/ colored /;
+use List::AllUtils qw/ pairmap sum shuffle/;
+
+use Term::ANSIScreen qw/:screen :cursor :color/;
+use IO::Prompt::Simple;
+use Prompt::ReadKey ();
 
 use MooseX::App::Command;
 use MooseX::MungeHas;
 
+use experimental 'postderef', 'signatures';
+
 parameter subcommand => (
     is => 'ro',
 );
-
-use experimental 'postderef', 'signatures';
 
 has tw => sub {
     Taskwarrior::Kusarigama::Wrapper->new
@@ -37,16 +62,15 @@ has tasks => sub {
     return +{ partition_by { $_->{priority} || 'U' } $_[0]->tw->export( '+READY' ) };
 };
 
+# for things that we don't want to wait to
+# see the result. We just fire out and 
+# stop thinking about it
 sub async_do ($self,$code) {
     return if fork;
 
     $code->();
     exit;
 }
-
-use IO::Prompt::Simple;
-use Prompt::ReadKey ();
-
 
 has _prompt => (
     is => 'ro',
@@ -56,7 +80,6 @@ has _prompt => (
 );
 
 sub nbr_prioritized_tasks($self) {
-    use List::AllUtils qw/ sum /;
     return sum map { scalar $self->tasks->{$_}->@* } qw/ H M L /;
 }
 
@@ -100,11 +123,7 @@ sub decimate_group($self,$target,$prio1,$prio2) {
 }
 
 sub pick_decimate($self, $tasks ) {
-    use List::AllUtils qw/ shuffle /;
     my @contenders = (shuffle @$tasks)[0..9];
-
-    use DDP;
-    use Term::ANSIColor;
 
     for ( 0..9 ) {
         my $c = $contenders[$_];
@@ -136,7 +155,6 @@ sub run {
     return $self->decimate if $self->subcommand eq 'decimate';
 
     while ( my $next = eval { shift $self->tasks->{U}->@* } ) {
-        use Term::ANSIScreen qw/:screen :cursor/;
         cls;
         $self->print_summary_line;
 
@@ -153,6 +171,7 @@ sub run {
                     { name => 'l', doc => 'low priority', keys => [ 'l' ] },
                     { name => 'L', doc => 'low priority and next', keys => [ 'L' ] },
                     { name => 'mod', doc => 'generic modification', keys => [ '.' ] },
+                    { name => 'append', doc => 'append', keys => [ ',' ] },
                     { name => 'done', keys => [ 'd' ] },
                     { name => 'delete', keys => [ 'D' ] },
                     { name => 'wait', keys => [ 'w' ] },
@@ -187,6 +206,9 @@ sub run {
             }
             elsif ( $action eq 'mod' ) {
                 $next->mod( prompt "mod" );
+            }
+            elsif ( $action eq 'append' ) {
+                $next->append( prompt "append" );
             }
             elsif ( $action eq 'done' ) {
                 $self->async_do(sub{ $next->done; });
@@ -235,16 +257,12 @@ sub wait_menu($self,$task) {
 
 sub print_summary_line($self) {
 
-    use List::AllUtils qw/ pairmap /;
-
     my %prio = pairmap { $a => scalar @$b } $self->tasks->%*;
 
     my @colors  = ( H => 'red', M => 'blue', L => 'cyan', 'U' => 'green' );
 
     say join ' ', pairmap { colored [ $b ], $prio{$a}, $a } @colors;
-
 }
-
 
 1;
 

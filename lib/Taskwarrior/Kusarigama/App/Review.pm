@@ -50,10 +50,6 @@ use MooseX::MungeHas;
 
 use experimental 'postderef', 'signatures';
 
-parameter subcommand => (
-    is => 'ro',
-);
-
 has tw => sub {
     Taskwarrior::Kusarigama::Wrapper->new
 };
@@ -152,8 +148,6 @@ sub pick_decimate($self, $tasks ) {
 sub run {
     my $self = shift;
 
-    return $self->decimate if $self->subcommand eq 'decimate';
-
     while ( my $next = eval { shift $self->tasks->{U}->@* } ) {
         cls;
         $self->print_summary_line;
@@ -177,6 +171,7 @@ sub run {
                     { name => 'wait', keys => [ 'w' ] },
                     { name => 'quit', keys => [ 'q' ] },
                     { name => 'annotate', keys => [ 'a' ] },
+                    { name => 'show again', keys => [ ' ' ] },
                     { name => 'next', doc => 'next', keys => [ 'n' ] },
                 ],
                 help_keys => [ '?' ],

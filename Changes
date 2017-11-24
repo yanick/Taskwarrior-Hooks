@@ -8,6 +8,7 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - New `review` and `decimate` kurasigama commands.
 
   [ NEW FEATURES ]
 

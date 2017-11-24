@@ -16,7 +16,9 @@ doap.xml
 lib/Taskwarrior/Kusarigama.pm
 lib/Taskwarrior/Kusarigama/App.pm
 lib/Taskwarrior/Kusarigama/App/Add.pm
+lib/Taskwarrior/Kusarigama/App/Decimate.pm
 lib/Taskwarrior/Kusarigama/App/Install.pm
+lib/Taskwarrior/Kusarigama/App/Review.pm
 lib/Taskwarrior/Kusarigama/Core.pm
 lib/Taskwarrior/Kusarigama/Hook.pm
 lib/Taskwarrior/Kusarigama/Hook/OnAdd.pm

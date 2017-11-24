@@ -1,18 +1,11 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
+0.4.0 2017-11-24
   [ ENHANCEMENTS ]
-  - New `review` and `decimate` kurasigama commands.
-
-  [ NEW FEATURES ]
+    - New `review` and `decimate` kurasigama commands.
 
   [ STATISTICS ]
+    - code churn: 6 files changed, 522 insertions(+), 2 deletions(-)
 
 0.3.1 2017-03-24
   [ BUG FIXES ]

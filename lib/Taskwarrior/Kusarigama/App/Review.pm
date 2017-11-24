@@ -148,7 +148,7 @@ sub pick_decimate($self, $tasks ) {
 sub run {
     my $self = shift;
 
-    while ( my $next = eval { shift $self->tasks->{U}->@* } ) {
+    while ( my $next = shift $self->tasks->{U}->@* ) {
         cls;
         $self->print_summary_line;
 

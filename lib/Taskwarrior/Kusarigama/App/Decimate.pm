@@ -41,9 +41,14 @@ has tw => sub {
     Taskwarrior::Kusarigama::Wrapper->new
 };
 
-has tasks => sub {
-    return +{ partition_by { $_->{priority} || 'U' } $_[0]->tw->export( '+READY' ) };
-};
+has tasks => (
+    is => 'ro',
+    clearer => 1,
+    lazy => 1,
+    default => sub {
+        return +{ partition_by { $_->{priority} || 'U' } $_[0]->tw->export( '+READY' ) };
+    }
+);
 
 # for things that we don't want to wait to
 # see the result. We just fire out and 
@@ -122,10 +127,13 @@ sub pick_decimate($self, $tasks ) {
 
     my $action = $self->menu_prompt( prompt => "which one?",
         options => [
+            { name => 'quit', keys => [ 'q' ] },
             map { +{  keys => [ $_ ], name => $_ } } 0..9
         ],
         help_keys => [ '?' ],
     );
+
+    exit if $action eq 'quit';
 
     @$tasks = grep { $_->{uuid} ne $contenders[$action]->{uuid} } @$tasks;
 

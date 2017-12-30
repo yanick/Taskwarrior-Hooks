@@ -34,6 +34,11 @@ Note that in the examples I'm using the triple bracket notation such that the '/
 
     $ task-kusarigama add Command::Plugin
 
+=head1 SEE ALSO
+
+L<https://github.com/ValiValpas/taskopen> - shell-based inspiration for 
+this plugin.
+
 =cut
 
 use 5.20.0;

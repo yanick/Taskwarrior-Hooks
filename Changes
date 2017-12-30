@@ -4,10 +4,13 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
+  - prevent crashing if the task selector returns nothing
 
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - 'task-kusarigama add' now runs the 'setup' of the new plugins
+  - new 'Command::Open' plugin
 
   [ NEW FEATURES ]
 

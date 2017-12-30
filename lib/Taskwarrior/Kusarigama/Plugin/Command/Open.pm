@@ -33,27 +33,28 @@ Note that in the examples I'm using the triple bracket notation such that the '/
 =head1 INSTALLATION
 
     $ task-kusarigama add Command::Plugin
-    $ task-kusarigama install
 
 =cut
 
 use 5.20.0;
 
+use List::AllUtils qw/ pairgrep pairmap pairs /;
+
 use Moo;
 
 extends 'Taskwarrior::Kusarigama::Plugin';
+with    'Taskwarrior::Kusarigama::Hook::OnCommand';
 
-with 'Taskwarrior::Kusarigama::Hook::OnCommand';
-
-use experimental qw/ postderef /;
+use experimental qw/ postderef signatures /;
 
 sub setup {
     my $self = shift;
-    
+
     for ( qw/ https http / ) {
         next if eval { $self->tw->config->{kusarigama}{plugin}{open}{$_} };
-        say "adding '$_' formats";
+        say "adding '$_' format";
         $self->tw->run_task->config( 
+            [{ 'rc.confirmation' => 'off' }],
             'kusarigama.plugin.open.'.$_ => "xdg-open {{{link}}}"
         );
     }
@@ -65,6 +66,8 @@ sub on_command {
     my $args = $self->args;
     my( $id, $type ) = $args =~ /^task\s+(?<id>.*?)\s+open\s*(?<type>\w*)/g;
 
+    die "no task provided\n" unless $id;
+
     my $prefixes = eval { $self->tw->config->{kusarigama}{plugin}{'open'} };
     $prefixes = { $prefixes->%{ $type } } if $type;
 
@@ -73,11 +76,6 @@ sub on_command {
     die "task '$id' not found\n" unless @tasks;
     die "'open' requires a single task\n" if @tasks > 1;
 
-
-    use List::AllUtils qw/ pairgrep pairmap pairs /;
-    use Smart::Match qw/ any /;
-
-    use DDP;
     my @links = 
        pairs
        pairgrep { $b }
@@ -102,15 +100,15 @@ sub on_command {
             $tty->say( ++$i, ': ', $_->[0] );
         }
 
-        use IO::Prompt::Simple qw/ prompt /;
+        require IO::Prompt::Simple;
 
-        my @answers = prompt 'which one(s)? ', {
+        my @answers = IO::Prompt::Simple::prompt( 'which one(s)? ', {
             choices => [ 0..$i ],
             input   => $tty,
-            output => $tty,
+            output  => $tty,
             default => 1,
-            multi => 1,
-        };
+            multi   => 1,
+        });
 
         if( grep { $_ > 0 } @answers ) {
             @links = @links[ map { $_-1} @answers ];
@@ -120,18 +118,14 @@ sub on_command {
     for my $l ( @links ) {
         my( $link, $command ) = $l->@*;
         $command = $self->expand( $command, $link, @tasks );
-        warn $command;
         system $command;
     }
 
 
 };
 
-use experimental qw/ signatures /;
 
 sub expand( $self, $command, $link, $task ) {
-    p $command;
-
     require Template::Mustache;
 
     return Template::Mustache->render(
@@ -141,11 +135,6 @@ sub expand( $self, $command, $link, $task ) {
             link => $link,
         }
     );
-
-
-    return 
-
 }
 
-# TODO in config, map prefixes with apps
 1;

@@ -171,7 +171,7 @@ sub export_tasks {
 
     run3 [qw/ task rc.recurrence=no rc.hooks=off export /, @query], undef, \my $out;
 
-    return @{ from_json $out };
+    return eval { @{ from_json $out } };
 }
 
 =head2 import_task

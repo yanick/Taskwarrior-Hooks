@@ -1,9 +1,60 @@
 package Taskwarrior::Kusarigama::Task;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: per-task Taskwarrior::Kusarigama::Wrapper
-
+$Taskwarrior::Kusarigama::Task::VERSION = '0.5.0';
 use strict;
 
 use experimental 'postderef';
+
+
+sub new {
+    my $class = shift;
+
+    my $data = pop;
+
+    $data->{_wrapper} = shift if @_;
+
+    bless $data, $class;
+}
+
+
+sub AUTOLOAD {
+    my $self = shift;
+
+    (my $meth = our $AUTOLOAD) =~ s/.+:://;
+    return if $meth eq 'DESTROY';
+
+    $meth =~ tr/_/-/;
+
+    $self->{_wrapper} ||= Taskwarrior::Kusarigama::Wrapper->new;
+
+    unshift @_, [] unless 'ARRAY' eq ref $_[0];
+
+    use Carp;
+    my $uuid = $self->{uuid} 
+        or croak "task doesn't have an uuid\n";
+
+    push $_[0]->@*, { uuid => $uuid };
+
+    return $self->{_wrapper}->RUN($meth, @_);
+}
+
+
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Task - per-task Taskwarrior::Kusarigama::Wrapper
+
+=head1 VERSION
+
+version 0.5.0
 
 =head1 SYNOPSIS
 
@@ -43,42 +94,15 @@ be passed via a C<_wrapper> attribute.
         { _wrapper => $wrapper, %data } 
     );
 
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-sub new {
-    my $class = shift;
-
-    my $data = pop;
-
-    $data->{_wrapper} = shift if @_;
-
-    bless $data, $class;
-}
-
-
-sub AUTOLOAD {
-    my $self = shift;
-
-    (my $meth = our $AUTOLOAD) =~ s/.+:://;
-    return if $meth eq 'DESTROY';
-
-    $meth =~ tr/_/-/;
-
-    $self->{_wrapper} ||= Taskwarrior::Kusarigama::Wrapper->new;
-
-    unshift @_, [] unless 'ARRAY' eq ref $_[0];
-
-    use Carp;
-    my $uuid = $self->{uuid} 
-        or croak "task doesn't have an uuid\n";
-
-    push $_[0]->@*, { uuid => $uuid };
-
-    return $self->{_wrapper}->RUN($meth, @_);
-}
-
-
-1;
-
-__END__

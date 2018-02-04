@@ -73,14 +73,18 @@ sub project_tasks {
     $self->run_task->export( { project => $project }, 'gh_issue.any:', '+PENDING' );
 }
 
-
 sub update_project {
     my ( $self, $project ) = @_;
 
-    my $repo = eval { $self->tw->config->{project}{$project}{github_repo} } 
-        || join '/', $self->tw->config->{github}{user}, $project;
+    my ($org, $repo) = split('/',
+        eval { $self->tw->config->{project}{$project}{github_repo} }
+        || join '/', $self->tw->config->{github}{user}, $project
+    );
 
-    say "syncing tickets for $repo...";
+    my %filter;
+    $filter{assignee} = $self->tw->config->{github}{user} unless $self->tw->config->{github}{user} eq $repo;
+
+    say "syncing tickets for $org/$repo...";
 
     my %tasks = map { $_->{gh_issue} => $_->{uuid} } $self->project_tasks($project);
 
@@ -88,8 +92,9 @@ sub update_project {
 
     say "fetching open tickets from Github...";
 
-    my @issues = $self->github->issue->repos_issues( 
-        split( '/', $repo ), { state => 'open' } 
+    my @issues = $self->github->issue->repos_issues(
+        $org, $repo,
+        { state => 'open', %filter }
     );
 
     say scalar(@issues), " issues retrieved";

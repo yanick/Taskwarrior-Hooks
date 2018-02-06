@@ -135,15 +135,17 @@ sub update_project {
             next;
         }
 
-        $self->run_task->add(
-            $issue->{title}, '+github', 
-            { project => $project, gh_issue => $issue->{number}  }
-        );
-        $self->run_task->annotate( [ '+LATEST' ], 
+        my $task = $self->tw->new_task({
+                description => $issue->{title},
+                tags => [ qw/ github / ],
+                project => $project,
+                gh_issue => $issue->{number}
+        });
+        $task->add_note(
             'https://github.com/' . $repo . '/issues/' . $issue->{number}
         );
 
-        my ( $task ) = $self->run_task->export( '+LATEST' );
+        $task->save;
 
         say "task create: ", $task->{id}, " - ", $task->{description};
     }

@@ -174,6 +174,23 @@ sub export_tasks {
     return eval { @{ from_json $out } };
 }
 
+=head2 new_task
+
+    my $task = $tw->new_task( \%task );
+    $task->save;
+
+Creates a new task, but doesn't commit it yet (use C<save> for that).
+
+
+=cut
+
+sub  new_task {
+    my ( $self, $task ) = @_;
+    $task ||= {};
+
+    return Taskwarrior::Kusarigama::Task->new( $self->run_task, $task );
+}
+
 =head2 import_task
 
     $tw->import_task( \%task  )

@@ -16,6 +16,30 @@ package Taskwarrior::Kusarigama::Plugin::Command::Github;
     # sync the project, baby
     $ task github List-Lazy
 
+=head1 DESCRIPTION
+
+Without any explicit configuration, the command will assume that
+the given project exists in your personal space. In other words,
+provided a C<github.user> set to C<yanick>, the command
+
+    $ task github List-Lazy
+
+will fetch the tickets of C<https://github.com/yanick/List-Lazy>.
+
+If you want to explicitly set the repository of a project, you can
+do so via C<project.PROJECT.github_repo>. E.g.:
+
+    $ task config project.List-Lazy.github_repo yenzie/LLazy
+
+The filter for the tickets to sync also follow a (hopefully) DWIM heuristic. 
+If the organization is C<github.user>, then all open tickets are sync'ed. 
+If the organization differ, the synced tickets defaults to be
+those assigned to C<github.user>. In all cases, the filter
+can be set explicitly via C<project.PROJECT.filter>, which takes a
+JSON structure.
+
+    $ task config project.List-Lazy.filter '{"asignee":"yenzie"}'
+
 
 =cut    
 
@@ -81,8 +105,13 @@ sub update_project {
         || join '/', $self->tw->config->{github}{user}, $project
     );
 
-    my %filter;
-    $filter{assignee} = $self->tw->config->{github}{user} unless $self->tw->config->{github}{user} eq $repo;
+    require JSON;
+    my %filter = ( state => 'open' );    
+    $filter{assignee} = $self->tw->config->{github}{user} unless $self->tw->config->{github}{user} eq $org;
+
+    %filter = ( %filter, eval {
+        JSON::from_from $self->tw->{config}{project}{$project}{filter} 
+    });
 
     say "syncing tickets for $org/$repo...";
 
@@ -91,18 +120,16 @@ sub update_project {
     say scalar(keys %tasks), " tasks already found locally";
 
     say "fetching open tickets from Github...";
+    say "using filter ", JSON::to_json( \%filter );
 
     my @issues = $self->github->issue->repos_issues(
-        $org, $repo,
-        { state => 'open', %filter }
+        $org, $repo, \%filter
     );
 
     say scalar(@issues), " issues retrieved";
 
     # there is supposed to be a `task import` command. Check that out
     for my $issue ( @issues ) {
-        use DDP; #p $issue;
-
         if( my $task = delete $tasks{ $issue->{number} } ) {
             say "issue ", $issue->{number}, " already present as task ", $task;
             next;

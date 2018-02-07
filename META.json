@@ -1,0 +1,217 @@
+{
+   "abstract" : "plugin system for the Taskwarrior task manager",
+   "author" : [
+      "Yanick Champoux <yanick@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.009, CPAN::Meta::Converter version 2.150001",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Taskwarrior-Kusarigama",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::More" : "0.96",
+            "Test::Vars" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "Clone" : "0",
+            "DateTime::Functions" : "0",
+            "File::HomeDir" : "0",
+            "Hash::Diff" : "0",
+            "Hash::Merge" : "0",
+            "IO::Prompt::Simple" : "0",
+            "IPC::Open3" : "0",
+            "IPC::Run3" : "0",
+            "JSON" : "0",
+            "List::AllUtils" : "0",
+            "List::MoreUtils" : "0",
+            "List::Util" : "0",
+            "List::UtilsBy" : "0",
+            "Module::Runtime" : "0",
+            "Moo" : "0",
+            "Moo::Role" : "0",
+            "MooseX::App" : "0",
+            "MooseX::App::Command" : "0",
+            "MooseX::MungeHas" : "0",
+            "Net::GitHub" : "0",
+            "Path::Tiny" : "0",
+            "Prompt::ReadKey" : "0",
+            "Set::Object" : "0",
+            "Symbol" : "0",
+            "Template::Mustache" : "0",
+            "Term::ANSIScreen" : "0",
+            "Try::Tiny" : "0",
+            "experimental" : "0",
+            "namespace::clean" : "0",
+            "overload" : "0",
+            "perl" : "v5.20.0",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      },
+      "test" : {
+         "recommends" : {
+            "CPAN::Meta" : "2.120900"
+         },
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0",
+            "File::Spec" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
+            "Test::MockObject::Extends" : "0",
+            "Test::More" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Taskwarrior::Kusarigama" : {
+         "file" : "lib/Taskwarrior/Kusarigama.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::App" : {
+         "file" : "lib/Taskwarrior/Kusarigama/App.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::App::Add" : {
+         "file" : "lib/Taskwarrior/Kusarigama/App/Add.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::App::Decimate" : {
+         "file" : "lib/Taskwarrior/Kusarigama/App/Decimate.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::App::Install" : {
+         "file" : "lib/Taskwarrior/Kusarigama/App/Install.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::App::Review" : {
+         "file" : "lib/Taskwarrior/Kusarigama/App/Review.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Core" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Core.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook::OnAdd" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook/OnAdd.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook::OnCommand" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook/OnCommand.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook::OnExit" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook/OnExit.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook::OnLaunch" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook/OnLaunch.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Hook::OnModify" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Hook/OnModify.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::AndAfter" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/AndAfter.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::ButBefore" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/ButBefore.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::Github" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/Github.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::Morning" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/Morning.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::Open" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/Open.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::Progress" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/Progress.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Command::Wait" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Command/Wait.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::GitCommit" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/GitCommit.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::ProjectAlias" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/ProjectAlias.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::Renew" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/Renew.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Plugin::SingleActive" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Plugin/SingleActive.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Task" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Task.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Wrapper" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Wrapper.pm",
+         "version" : "v0.6.0"
+      },
+      "Taskwarrior::Kusarigama::Wrapper::Exception" : {
+         "file" : "lib/Taskwarrior/Kusarigama/Wrapper/Exception.pm",
+         "version" : "v0.6.0"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/yanick/Taskwarrior-Kusarigama/issues"
+      },
+      "homepage" : "https://github.com/yanick/Taskwarrior-Kusarigama",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/yanick/Taskwarrior-Kusarigama.git",
+         "web" : "https://github.com/yanick/Taskwarrior-Kusarigama"
+      }
+   },
+   "version" : "0.6.0",
+   "x_author_pledge" : {
+      "version" : 1
+   },
+   "x_authority" : "cpan:YANICK",
+   "x_contributors" : [
+      "Paul Fenwick <pjf@perltraining.com.au>",
+      "Shawn Sorichetti <shawn@coloredblocks.com>"
+   ],
+   "x_serialization_backend" : "JSON::XS version 3.01"
+}
+

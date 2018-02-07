@@ -1,19 +1,12 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
+0.6.0 2018-02-06
   [ ENHANCEMENTS ]
-  - New  'github' command.
-  - Added API methods to easily clone/create/save new tasks.
-
-  [ NEW FEATURES ]
+    - New  'github' command.
+    - Added API methods to easily clone/create/save new tasks.
 
   [ STATISTICS ]
+    - code churn: 7 files changed, 279 insertions(+), 4 deletions(-)
 
 0.5.0 2017-12-31
   [ BUG FIXES ]

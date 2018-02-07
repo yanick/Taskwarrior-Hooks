@@ -1,43 +1,10 @@
 package  Taskwarrior::Kusarigama::Wrapper;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: interface to the taskwarrior's 'task' command
-
-=head1 SYNOPSIS
-
-    use  TaskWarrior::Kusarigama::Wrapper;
-
-    my $tw = TaskWarrior::Kusarigama::Wrapper->new;
-
-    say for $tw->next( [ '+focus' ] );
-
-=head1 DESCRIPTION
-
-Inspired by L<Git::Wrapper> (i.e., I lifted and stole
-the code, and tweaked to work with 'task'). At its core
-beats a dark AUTOLOAD heart, which convert any method
-call into an invocation of C<task> with whatever
-parameters are passed.
-
-If the first parameter to be passed to a command is an array ref, 
-it's understood to be a filter that will be inserted before the command.
-Also, any parameter will be a hahsref, will be also be understood as a
-key-value pair, and given the right separator (C<=> for C<rc.*> arguments, C<:> for regular ones).
-For example:
-
-    $tw->mod( [ '+focus', '+PENDING', { 'due.before' => 'today' } ], { priority => 'H' } );
-    # runs task +focus +PENDING due.before:today mod priority:H
-
-=cut
+$Taskwarrior::Kusarigama::Wrapper::VERSION = '0.6.0';
 
 # TODO use Test::Pod::Snippet for that example ^^^
 
-=head1 METHODS
-
-=head2 export
-
-As a convenience, C<export> returns the list of tasks exported (as 
-L<Taskwarrior::Kusarigama::Task> objects) instead than as raw text.
-
-=cut
 
 use 5.20.0;
 
@@ -162,3 +129,62 @@ sub AUTOLOAD {
 }
 
 1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Wrapper - interface to the taskwarrior's 'task' command
+
+=head1 VERSION
+
+version 0.6.0
+
+=head1 SYNOPSIS
+
+    use  TaskWarrior::Kusarigama::Wrapper;
+
+    my $tw = TaskWarrior::Kusarigama::Wrapper->new;
+
+    say for $tw->next( [ '+focus' ] );
+
+=head1 DESCRIPTION
+
+Inspired by L<Git::Wrapper> (i.e., I lifted and stole
+the code, and tweaked to work with 'task'). At its core
+beats a dark AUTOLOAD heart, which convert any method
+call into an invocation of C<task> with whatever
+parameters are passed.
+
+If the first parameter to be passed to a command is an array ref, 
+it's understood to be a filter that will be inserted before the command.
+Also, any parameter will be a hahsref, will be also be understood as a
+key-value pair, and given the right separator (C<=> for C<rc.*> arguments, C<:> for regular ones).
+For example:
+
+    $tw->mod( [ '+focus', '+PENDING', { 'due.before' => 'today' } ], { priority => 'H' } );
+    # runs task +focus +PENDING due.before:today mod priority:H
+
+=head1 METHODS
+
+=head2 export
+
+As a convenience, C<export> returns the list of tasks exported (as 
+L<Taskwarrior::Kusarigama::Task> objects) instead than as raw text.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

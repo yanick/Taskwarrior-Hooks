@@ -5,6 +5,8 @@ use strict;
 
 use experimental 'postderef';
 
+use Clone;
+
 =head1 SYNOPSIS
 
     use Taskwarrior::Kusarigama::Wrapper;
@@ -48,12 +50,66 @@ be passed via a C<_wrapper> attribute.
 
 sub new {
     my $class = shift;
+    $class = ref $class if ref $class;
 
     my $data = pop;
 
     $data->{_wrapper} = shift if @_;
 
     bless $data, $class;
+}
+
+sub add_note {
+    my ( $self, $note ) = @_;
+
+    $self->{annotations} ||= [];
+
+    require DateTime::Functions;
+    my $now = DateTime::Functions::now();
+
+    my $timestamp = $now->ymd("") . 'T' . $now->hms("") . "Z";
+
+    push $self->{annotations}->@*, {
+        entry => $timestamp,
+        description => $note,
+    };
+}
+
+=head2 clone
+
+Clone the current task. All attributes are copied, except for
+C<id>, C<uuid>, C<urgency>, C<status>, C<entry> and C<modified>.
+
+=cut
+
+sub clone {
+    my $self = shift;
+
+    my $cloned = Clone::clone($self);
+
+    delete $cloned->{$_} for qw/ id uuid entry modified urgency status /;
+
+    return $self->new( $self->{_wrapper}, $cloned );
+}
+
+sub save {
+    my $self = shift;
+    
+    require Path::Tiny;
+    require JSON;
+    my $file = Path::Tiny->tempfile;
+    require List::Util;
+
+    $file->spew( JSON::to_json( [ { List::Util::pairgrep( sub { $a !~ /^_/ }, %$self ) } ] ) );
+
+    $self->{_wrapper}->RUN('import', "".$file );
+
+    my ( $new ) = $self->{_wrapper}->export('+LATEST');
+
+    delete $self->{$_} for keys %$self;
+    $self->{$_} = $new->{$_} for keys %$new;
+
+    return  $self;
 }
 
 

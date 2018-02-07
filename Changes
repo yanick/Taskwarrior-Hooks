@@ -8,6 +8,8 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - New  'github' command.
+  - Added API methods to easily clone/create/save new tasks.
 
   [ NEW FEATURES ]
 

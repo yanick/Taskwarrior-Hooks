@@ -3,13 +3,12 @@ package Taskwarrior::Kusarigama::Plugin::ProjectDefaults;
 
 =head SYNOPSIS
 
-    $ task config project.dailies "recur:1d +daily"
+    $ task config project.dailies '{ "recur": "1d", "tags": [ "daily" ], "due": "tomorrow" }'
     $ task add water the plants project:dailies
 
 =head1 DESCRIPTION
 
 The defaults of hierarchical projects are cumulative.
-
 
 =cut
 

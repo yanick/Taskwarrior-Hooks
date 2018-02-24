@@ -3,7 +3,7 @@ package Taskwarrior::Kusarigama::Plugin::ProjectDefaults;
 
 =head SYNOPSIS
 
-    $ task config project.dailies.defaults '{ "recur": "1d", "tags": [ "daily" ], "due": "tomorrow" }'
+    $ task config project.dailies.defaults 'recur:1d +daily due:tomorrow'
     $ task add water the plants project:dailies
 
 =head1 DESCRIPTION
@@ -15,8 +15,8 @@ to the already provided values (if any).
 
 The defaults of hierarchical projects are cumulative. So you can do things like
 
-    $ task config project.work.defaults '{ "priority": "M" }'
-    $ task config project.work.projectx.defaults '{ "due": "eom" }'
+    $ task config project.work.defaults 'priority:M'
+    $ task config project.work.projectx.defaults 'due:eom'
 
     $ task add ticket ABC-123 project:work.projectx
     # will get due:eom and priority:M
@@ -43,33 +43,28 @@ use experimental qw/ signatures postderef /;
 sub project_config ($self, $project ) {
     my $config = $self->tw->config->{project} or return {};
 
-    my %config;
-
     my @levels = split /\./, $project;
 
+    my $aggregated = '';
+
     while( my $l = shift @levels ) {
-        my $config = $config->{$l} or last;
-        %config = merge( \%config, $config )->%*;
+        $config = $config->{$l} or last;
+        $aggregated = $config->{defaults} .' '. $aggregated;
     }
 
-    return \%config;
+    return $aggregated;
 }
 
 sub on_add ( $self, $task ) {
     # no project? nothing to do
     my $project = $task->{project} or return;
 
-    my $defaults = eval { from_json $self->project_config( $project )->{defaults} }
+    my $defaults = $self->project_config( $project )
         or return;
 
-    while( my( $k, $v) = each %$defaults ) {
-        if( not $task->{$k} ) {
-            $task->{$k} = $v;
-        }
-        elsif( ref $task->{$k} eq 'ARRAY' ) {
-            push $task->{$k}->@*, @$v;
-        }
-    }
+    $task->{$1} ||= $2 while $defaults =~ /\b(\S+):(\S+)\b/g;
+
+    push $task->{tags}->@*, $1 while $defaults =~ /\+(\S+)/g;
 }
 
 1;

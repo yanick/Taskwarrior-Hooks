@@ -3,12 +3,24 @@ package Taskwarrior::Kusarigama::Plugin::ProjectDefaults;
 
 =head SYNOPSIS
 
-    $ task config project.dailies '{ "recur": "1d", "tags": [ "daily" ], "due": "tomorrow" }'
+    $ task config project.dailies.defaults '{ "recur": "1d", "tags": [ "daily" ], "due": "tomorrow" }'
     $ task add water the plants project:dailies
 
 =head1 DESCRIPTION
 
-The defaults of hierarchical projects are cumulative.
+If a task is created with a project, the plugin looks if there is a 
+C<defaults> assigned to the project, and if so, defaults the values.
+In the case of array values (i.e., tags), the defaults are appended
+to the already provided values (if any).
+
+The defaults of hierarchical projects are cumulative. So you can do things like
+
+    $ task config project.work.defaults '{ "priority": "M" }'
+    $ task config project.work.projectx.defaults '{ "due": "eom" }'
+
+    $ task add ticket ABC-123 project:work.projectx
+    # will get due:eom and priority:M
+
 
 =cut
 

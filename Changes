@@ -8,11 +8,17 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
-  - add new ProjectDefaults plugin.
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.7.0 2018-02-24
+  [ ENHANCEMENTS ]
+    - add new ProjectDefaults plugin.
+
+  [ STATISTICS ]
+    - code churn: 5 files changed, 110 insertions(+), 2 deletions(-)
 
 0.6.0 2018-02-06
   [ ENHANCEMENTS ]

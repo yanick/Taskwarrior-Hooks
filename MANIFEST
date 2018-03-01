@@ -49,6 +49,7 @@ t/00-report-prereqs.dd
 t/00-report-prereqs.t
 t/plugin-progress.t
 t/plugin-projectdefaults.t
+t/plugin-renew.t
 t/task.t
 t/wrapper.t
 xt/release/unused-vars.t

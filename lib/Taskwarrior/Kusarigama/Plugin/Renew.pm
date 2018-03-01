@@ -19,16 +19,15 @@ periods don't make sense (think 'watering the plants').
 Note that no susbequent task is created if a task
 is deleted instead of completed.
 
-The plugin creates 3 new UDAs. C<renew>, a boolean
-indicating that the task should be renewing, C<rdue>, 
-the formula for the new due date and C<rwait>, the formula for the
-date at which the new task should be unhidden. 
+The plugin creates 4 new UDAs. C<renew>, a boolean
+indicating that the task should be renewing, and  C<rdue>, C<rwait>
+and C<rscheduled>, the formula for the values to use upon creation/renewal.
 
-C<rdue> is required, and C<renew> 
-and C<rwait> are both optional.
+C<renew> is optional and only required if none of the
+C<r*> attributes is present.
 
 Since the waiting period is often dependent on the due value,
-as a convenience if the string C<due> is found in C<rwait>,
+as a convenience if the string C<due> is found in C<rwait> or C<rscheduled>,
 it will be substitued by the C<rdue> value. So
 
     $ task add rdue:now+1week rwait:-3days+due Do Laundry
@@ -45,6 +44,16 @@ C<task> does some weeeeeird parsing with C<due>.
 
 (see L<https://bug.tasktools.org/browse/TW-1900>)
 
+=head2 Date calculations
+
+This plugin adds a trinary operator to all of the
+C<r*> attributes.
+
+    task add do the thing rdue:"eom - now < 1w ? eom+1m : eom"
+
+In this example, we want to do the thing at least once a month,
+but if we do it in the last week of the month, we're satisfied
+and set the new deadline at the end of next month.
 
 =cut
 
@@ -60,45 +69,70 @@ use MooseX::MungeHas;
 
 extends 'Taskwarrior::Kusarigama::Plugin';
 
-with 'Taskwarrior::Kusarigama::Hook::OnExit';
+with 'Taskwarrior::Kusarigama::Hook::OnExit',
+     'Taskwarrior::Kusarigama::Hook::OnAdd';
 
 use experimental 'postderef';
 
 has custom_uda => sub{ +{
-    renew => 'creates a follow-up task upon closing',
-    rdue => 'next task due date',
-    rwait => 'next task wait period',
+    renew      => 'creates a follow-up task upon closing',
+    rdue       => 'next task due date',
+    rwait      => "next task 'wait' period",
+    rscheduled => "next task 'scheduled' period",
 } };
+
+sub r_calc {
+    my ( $self, $expr ) = @_;
+
+    if( $expr =~ /
+        ^ (?<cond>.*?) \? (?<true>.*?) : (?<false>.*) $
+    /x ) {
+        $expr = $self->calc($+{cond}) eq 'true' ? $+{true} : $+{false};
+    }
+
+    return $self->calc($expr);
+}
+
+sub process_exit_task {
+    my ( $self, $task ) = @_;
+
+    return unless any { $task->{$_} } qw/ renew rdue rwait rscheduled /;
+
+    require Taskwarrior::Kusarigama::Task;
+    $task = Taskwarrior::Kusarigama::Task->new( $self->tw->run_task, { %$task } )->clone; 
+
+    delete $task->{$_} for qw/ due wait scheduled /;
+
+    $self->on_add($task);
+
+    $task->save;
+
+    printf "created follow-up task %d - '%s'\n",
+        $task->{id}, $task->{description};
+}
 
 sub on_exit {
     my( $self, @tasks ) = @_;
 
     return unless $self->command eq 'done';
 
-    my $renewed;
+    $self->process_exit_task($_) for @tasks;
+}
 
-    for my $task ( @tasks ) {
-        next unless any { $task->{$_} } qw/ renew rdue rwait /;
-        $renewed = 1;
+sub on_add {
+    my( $self, $task ) = @_;
 
-        my $new = clone($task);
+    my $due = $task->{rdue};
 
-        delete $new->@{qw/ end modified entry status uuid /};
+    for my $field ( qw/ due wait scheduled / ) {
+        next if $task->{$field};
 
-        my $due = $new->{rdue};
-        $new->{due} = $self->calc($due) if $due;
+        my $value = $task->{ 'r' . $field } or next;
 
-        my $wait = $new->{rwait};
-        $wait =~ s/due/$due/;
-        $new->{wait} = $self->calc($wait) if $wait;
+        $value =~ s/due/$due/g;
 
-        $new->{status} = $wait ? 'waiting' : 'pending';
-
-        $self->import_task($new);
-
+        $task->{$field} = $self->r_calc($value);
     }
-
-    say 'created follow-up tasks' if $renewed;
 }
 
 1;

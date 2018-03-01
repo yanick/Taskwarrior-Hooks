@@ -64,11 +64,23 @@ with 'Taskwarrior::Kusarigama::Hook::OnExit';
 
 use experimental 'postderef';
 
+# TODO add 'rexpire' and 'rscheduled'
+
 has custom_uda => sub{ +{
     renew => 'creates a follow-up task upon closing',
     rdue => 'next task due date',
     rwait => 'next task wait period',
 } };
+
+sub r_calc {
+    my ( $self, $expr ) = @_;
+
+    return unless $expr =~ /
+        ^ (?<cond>.*?) \? (?<true>.*?) : (?<false>.*) $
+    /x;
+
+    return $self->calc($+{cond}) eq 'true' ? $+{true} : $+{false};
+}
 
 sub on_exit {
     my( $self, @tasks ) = @_;
@@ -86,11 +98,11 @@ sub on_exit {
         delete $new->@{qw/ end modified entry status uuid /};
 
         my $due = $new->{rdue};
-        $new->{due} = $self->calc($due) if $due;
+        $new->{due} = $self->r_calc($due) if $due;
 
         my $wait = $new->{rwait};
         $wait =~ s/due/$due/;
-        $new->{wait} = $self->calc($wait) if $wait;
+        $new->{wait} = $self->r_calc($wait) if $wait;
 
         $new->{status} = $wait ? 'waiting' : 'pending';
 

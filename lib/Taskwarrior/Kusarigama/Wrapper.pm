@@ -138,7 +138,25 @@ sub _parse_args($self,$cmd,@args) {
     if( @args and ref $args[0] eq 'ARRAY' ) {
         unshift @command, map {  $self->_map_to_arg($_) } ( shift @args )->@*;
     }
-    return [ @command, map { $self->_map_to_arg($_) } @args ];
+    my @stdin;
+    push @stdin, ${pop @args} if @args and ref $args[-1] eq 'SCALAR';
+    return ( [ @command, map { $self->_map_to_arg($_) } @args ], @stdin );
+}
+
+sub save {
+    my( $self, $task ) = @_;
+
+    require JSON;
+
+    my $id = $task->{uuid} || '+LATEST';
+
+    my $json = JSON::to_json([ $task ]);
+
+    $self->RUN('import', \$json );
+
+    my ( $new ) = $self->export($id);
+
+    return $new;
 }
 
 sub export {

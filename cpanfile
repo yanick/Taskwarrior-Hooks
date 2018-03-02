@@ -38,6 +38,7 @@ on 'test' => sub {
   requires "File::Spec" => "0";
   requires "IO::Handle" => "0";
   requires "IPC::Open3" => "0";
+  requires "Test::Deep" => "0";
   requires "Test::MockObject" => "0";
   requires "Test::MockObject::Extends" => "0";
   requires "Test::More" => "0";

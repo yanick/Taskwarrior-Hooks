@@ -8,12 +8,18 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
-  - improve the Progress plugin.
-  - improve the Renew plugin.
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.8.0 2018-03-04
+  [ ENHANCEMENTS ]
+    - improve the Progress plugin.
+    - improve the Renew plugin.
+
+  [ STATISTICS ]
+    - code churn: 9 files changed, 231 insertions(+), 43 deletions(-)
 
 0.7.0 2018-02-24
   [ ENHANCEMENTS ]

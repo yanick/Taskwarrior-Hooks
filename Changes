@@ -8,6 +8,7 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - remove leading space when using ProjectAlias [GH#24, harleypig]
 
   [ NEW FEATURES ]
 

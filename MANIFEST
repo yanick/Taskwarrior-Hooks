@@ -48,6 +48,7 @@ t/00-compile.t
 t/00-report-prereqs.dd
 t/00-report-prereqs.t
 t/plugin-progress.t
+t/plugin-projectalias.t
 t/plugin-projectdefaults.t
 t/plugin-renew.t
 t/task.t

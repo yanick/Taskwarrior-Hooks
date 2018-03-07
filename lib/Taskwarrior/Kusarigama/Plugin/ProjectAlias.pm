@@ -18,11 +18,11 @@ sub on_add {
 
     my $desc = $task->{description};
 
-    $desc =~ s/(?:^|\s)\@(\w+)// or return;
+    $desc =~ s/(^|\s)\@(\w+)\s*/$1/ or return;
+
+    $task->{project} = $2;
 
     $task->{description} = $desc;
-
-    $task->{project} = $1;
 }
 
 sub on_modify { 

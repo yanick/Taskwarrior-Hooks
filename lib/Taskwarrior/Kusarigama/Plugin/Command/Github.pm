@@ -1,47 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::Command::Github;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: sync tickets of a Github project
-
-=head1 SYNOPSIS
-
-    # add the `github` command
-    $ task-kusarigama add Command::Github
-
-    # add our oauth creds
-    # see https://github.com/settings/tokens
-    $ task config github.oauth_token deadbeef
-
-    # who is you?
-    $ task config github.user yanick
-
-    # sync the project, baby
-    $ task github List-Lazy
-
-=head1 DESCRIPTION
-
-Without any explicit configuration, the command will assume that
-the given project exists in your personal space. In other words,
-provided a C<github.user> set to C<yanick>, the command
-
-    $ task github List-Lazy
-
-will fetch the tickets of C<https://github.com/yanick/List-Lazy>.
-
-If you want to explicitly set the repository of a project, you can
-do so via C<project.PROJECT.github_repo>. E.g.:
-
-    $ task config project.List-Lazy.github_repo yenzie/LLazy
-
-The filter for the tickets to sync also follow a (hopefully) DWIM heuristic. 
-If the organization is C<github.user>, then all open tickets are sync'ed. 
-If the organization differ, the synced tickets defaults to be
-those assigned to C<github.user>. In all cases, the filter
-can be set explicitly via C<project.PROJECT.filter>, which takes a
-JSON structure.
-
-    $ task config project.List-Lazy.filter '{"asignee":"yenzie"}'
-
-
-=cut    
+$Taskwarrior::Kusarigama::Plugin::Command::Github::VERSION = '0.9.0';
 
 use 5.10.0;
 
@@ -158,9 +118,68 @@ sub update_project {
 
 1;
 
+__END__
 
+=pod
 
+=encoding UTF-8
 
+=head1 NAME
 
+Taskwarrior::Kusarigama::Plugin::Command::Github - sync tickets of a Github project
 
+=head1 VERSION
 
+version 0.9.0
+
+=head1 SYNOPSIS
+
+    # add the `github` command
+    $ task-kusarigama add Command::Github
+
+    # add our oauth creds
+    # see https://github.com/settings/tokens
+    $ task config github.oauth_token deadbeef
+
+    # who is you?
+    $ task config github.user yanick
+
+    # sync the project, baby
+    $ task github List-Lazy
+
+=head1 DESCRIPTION
+
+Without any explicit configuration, the command will assume that
+the given project exists in your personal space. In other words,
+provided a C<github.user> set to C<yanick>, the command
+
+    $ task github List-Lazy
+
+will fetch the tickets of C<https://github.com/yanick/List-Lazy>.
+
+If you want to explicitly set the repository of a project, you can
+do so via C<project.PROJECT.github_repo>. E.g.:
+
+    $ task config project.List-Lazy.github_repo yenzie/LLazy
+
+The filter for the tickets to sync also follow a (hopefully) DWIM heuristic. 
+If the organization is C<github.user>, then all open tickets are sync'ed. 
+If the organization differ, the synced tickets defaults to be
+those assigned to C<github.user>. In all cases, the filter
+can be set explicitly via C<project.PROJECT.filter>, which takes a
+JSON structure.
+
+    $ task config project.List-Lazy.filter '{"asignee":"yenzie"}'
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

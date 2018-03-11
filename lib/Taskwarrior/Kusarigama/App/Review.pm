@@ -1,36 +1,7 @@
 package Taskwarrior::Kusarigama::App::Review;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: interactive review of unprioritized tasks
-
-=head1 SYNOPSIS
-
-    $ task-kusarigama review
-
-=head1 DESCRIPTION
-
-Interactive review of tasks. 
-
-The command gathers all the tasks that are not proritized and
-display them one by one, providing a menu of actions to do.
-
-
-    Key   Name       Description
-    h     h          high priority
-    H     H          high priority and next
-    m     m          med priority
-    M     M          med priority and next
-    l     l          low priority
-    L     L          low priority and next
-    .     mod        generic modification
-    ,     append     append
-    d     done
-    D     delete
-    w     wait
-    q     quit
-    a     annotate
-    n     next       next
-    ?     help       List available commands
-
-=cut
+$Taskwarrior::Kusarigama::App::Review::VERSION = '0.9.0';
 
 use 5.20.0;
 
@@ -261,3 +232,57 @@ sub print_summary_line($self) {
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::App::Review - interactive review of unprioritized tasks
+
+=head1 VERSION
+
+version 0.9.0
+
+=head1 SYNOPSIS
+
+    $ task-kusarigama review
+
+=head1 DESCRIPTION
+
+Interactive review of tasks. 
+
+The command gathers all the tasks that are not proritized and
+display them one by one, providing a menu of actions to do.
+
+    Key   Name       Description
+    h     h          high priority
+    H     H          high priority and next
+    m     m          med priority
+    M     M          med priority and next
+    l     l          low priority
+    L     L          low priority and next
+    .     mod        generic modification
+    ,     append     append
+    d     done
+    D     delete
+    w     wait
+    q     quit
+    a     annotate
+    n     next       next
+    ?     help       List available commands
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

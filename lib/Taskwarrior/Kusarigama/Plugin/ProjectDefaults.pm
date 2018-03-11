@@ -1,28 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::ProjectDefaults;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: assign project-level defaults when creating tasks
-
-=head SYNOPSIS
-
-    $ task config project.dailies.defaults 'recur:1d +daily due:tomorrow'
-    $ task add water the plants project:dailies
-
-=head1 DESCRIPTION
-
-If a task is created with a project, the plugin looks if there is a 
-C<defaults> assigned to the project, and if so, defaults the values.
-In the case of array values (i.e., tags), the defaults are appended
-to the already provided values (if any).
-
-The defaults of hierarchical projects are cumulative. So you can do things like
-
-    $ task config project.work.defaults 'priority:M'
-    $ task config project.work.projectx.defaults 'due:eom'
-
-    $ task add ticket ABC-123 project:work.projectx
-    # will get due:eom and priority:M
-
-
-=cut
+$Taskwarrior::Kusarigama::Plugin::ProjectDefaults::VERSION = '0.9.0';
 
 use 5.10.0;
 use strict;
@@ -69,3 +48,49 @@ sub on_add ( $self, $task ) {
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Plugin::ProjectDefaults - assign project-level defaults when creating tasks
+
+=head1 VERSION
+
+version 0.9.0
+
+=head1 DESCRIPTION
+
+If a task is created with a project, the plugin looks if there is a 
+C<defaults> assigned to the project, and if so, defaults the values.
+In the case of array values (i.e., tags), the defaults are appended
+to the already provided values (if any).
+
+The defaults of hierarchical projects are cumulative. So you can do things like
+
+    $ task config project.work.defaults 'priority:M'
+    $ task config project.work.projectx.defaults 'due:eom'
+
+    $ task add ticket ABC-123 project:work.projectx
+    # will get due:eom and priority:M
+
+=head SYNOPSIS
+
+    $ task config project.dailies.defaults 'recur:1d +daily due:tomorrow'
+    $ task add water the plants project:dailies
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

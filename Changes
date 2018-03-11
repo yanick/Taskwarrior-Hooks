@@ -8,11 +8,17 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
-  - remove leading space when using ProjectAlias [GH#24, harleypig]
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.9.0 2018-03-11
+  [ ENHANCEMENTS ]
+    - remove leading space when using ProjectAlias [GH#24, harleypig]
+
+  [ STATISTICS ]
+    - code churn: 4 files changed, 47 insertions(+), 5 deletions(-)
 
 0.8.0 2018-03-04
   [ ENHANCEMENTS ]

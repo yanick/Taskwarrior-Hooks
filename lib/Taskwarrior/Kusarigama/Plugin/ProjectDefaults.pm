@@ -77,7 +77,7 @@ The defaults of hierarchical projects are cumulative. So you can do things like
     $ task add ticket ABC-123 project:work.projectx
     # will get due:eom and priority:M
 
-=head SYNOPSIS
+=head1 SYNOPSIS
 
     $ task config project.dailies.defaults 'recur:1d +daily due:tomorrow'
     $ task add water the plants project:dailies

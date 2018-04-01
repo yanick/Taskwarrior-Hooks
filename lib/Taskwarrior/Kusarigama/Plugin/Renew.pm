@@ -147,7 +147,7 @@ In this example, we want to do the thing at least once a month,
 but if we do it in the last week of the month, we're satisfied
 and set the new deadline at the end of next month.
 
-=head SYNOPSIS
+=head1 SYNOPSIS
 
     $ task add water the plants rdue:now+5d rwait:now+4d
 

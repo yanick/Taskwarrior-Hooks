@@ -6,6 +6,7 @@ Revision history for Taskwarrior-Hooks
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
+  - Fix POD errors. [GH#25, Sweth Chandramouli]
 
   [ ENHANCEMENTS ]
 

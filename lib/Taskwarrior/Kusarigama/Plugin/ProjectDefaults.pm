@@ -1,7 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::ProjectDefaults;
 # ABSTRACT: assign project-level defaults when creating tasks
 
-=head SYNOPSIS
+=head1 SYNOPSIS
 
     $ task config project.dailies.defaults 'recur:1d +daily due:tomorrow'
     $ task add water the plants project:dailies

@@ -1,7 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::Renew;
 # ABSTRACT: create a follow-up task upon completion
 
-=head SYNOPSIS
+=head1 SYNOPSIS
 
     $ task add water the plants rdue:now+5d rwait:now+4d
 

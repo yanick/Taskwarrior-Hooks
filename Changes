@@ -4,16 +4,24 @@ Revision history for Taskwarrior-Hooks
   [ API CHANGES ]
 
   [ BUG FIXES ]
-  - fix user-defined filters in Command::Github. [GH#26, perigrin]
 
   [ DOCUMENTATION ]
-  - Fix POD errors. [GH#25, Sweth Chandramouli]
 
   [ ENHANCEMENTS ]
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.9.1 2018-06-04
+  [ BUG FIXES ]
+    - fix user-defined filters in Command::Github. [GH#26, perigrin]
+
+  [ DOCUMENTATION ]
+    - Fix POD errors. [GH#25, Sweth Chandramouli]
+
+  [ STATISTICS ]
+    - code churn: 4 files changed, 20 insertions(+), 11 deletions(-)
 
 0.9.0 2018-03-11
   [ ENHANCEMENTS ]

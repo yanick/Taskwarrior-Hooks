@@ -1,19 +1,7 @@
 package Taskwarrior::Kusarigama::App::Decimate;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: interactively re-prioritize tasks
-
-=head1 SYNOPSIS
-
-    $ task-kusarigama decimate
-
-=head1 DESCRIPTION
-
-This command helps re-prioritize tasks. It assumes that we want
-10% of the tasks as high priority, 60% as medium  priority, and the remaining 30% as
-low priority. If the distribution of the tasks does not match those proportions,
-it will show 10 tasks of the category that has too many tasks, and ask you to pick
-one to be promoted/demoted.
-
-=cut
+$Taskwarrior::Kusarigama::App::Decimate::VERSION = '0.9.1';
 
 use 5.20.0;
 
@@ -174,3 +162,41 @@ sub print_summary_line($self) {
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::App::Decimate - interactively re-prioritize tasks
+
+=head1 VERSION
+
+version 0.9.1
+
+=head1 SYNOPSIS
+
+    $ task-kusarigama decimate
+
+=head1 DESCRIPTION
+
+This command helps re-prioritize tasks. It assumes that we want
+10% of the tasks as high priority, 60% as medium  priority, and the remaining 30% as
+low priority. If the distribution of the tasks does not match those proportions,
+it will show 10 tasks of the category that has too many tasks, and ask you to pick
+one to be promoted/demoted.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

@@ -52,7 +52,7 @@ either via C<task-kusarigama>
 
 or directly via the Taskwarrior config command
 
-    $ task config  task-kusarigama.plugins  Command::AndAfter
+    $ task config  kusarigama.plugins  Command::AndAfter
 
 =head3 Configure the plugins
 

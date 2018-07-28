@@ -174,7 +174,7 @@ sub AUTOLOAD {
     (my $meth = our $AUTOLOAD) =~ s/.+:://;
     return if $meth eq 'DESTROY';
 
-    $meth =~ tr/_/-/;
+    $meth =~ s/(?<=.)_/-/;
 
     return $self->RUN($meth, @_);
 }

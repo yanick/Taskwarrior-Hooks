@@ -6,13 +6,19 @@ Revision history for Taskwarrior-Hooks
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
-  - Fix documentation for 'and-after'. [GH#27, Sweth Chandramouli]
 
   [ ENHANCEMENTS ]
 
   [ NEW FEATURES ]
 
   [ STATISTICS ]
+
+0.9.2 2018-07-28
+  [ DOCUMENTATION ]
+    - Fix documentation for 'and-after'. [GH#27, Sweth Chandramouli]
+
+  [ STATISTICS ]
+    - code churn: 5 files changed, 30 insertions(+), 12 deletions(-)
 
 0.9.1 2018-06-04
   [ BUG FIXES ]

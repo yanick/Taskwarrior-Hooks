@@ -6,6 +6,7 @@ Revision history for Taskwarrior-Hooks
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
+  - Fix documentation for 'and-after'. [GH#27, Sweth Chandramouli]
 
   [ ENHANCEMENTS ]
 

@@ -1,6 +1,7 @@
 package Taskwarrior::Kusarigama::Hook::OnCommand;
+our $AUTHORITY = 'cpan:YANICK';
 #ABSTRACT: Role for plugins implementing custom commands
-
+$Taskwarrior::Kusarigama::Hook::OnCommand::VERSION = '0.9.2';
 use strict;
 use warnings;
 
@@ -19,6 +20,20 @@ has command_name => (
 requires 'on_command';
 
 1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Hook::OnCommand - Role for plugins implementing custom commands
+
+=head1 VERSION
+
+version 0.9.2
 
 =head1 SYNOPSIS
 
@@ -61,14 +76,15 @@ but it can be modified via the C<command_name> attribute.
 
     sub on_command { ... };
 
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
 =cut
-
-
-
-
-
-
-
-
-
-

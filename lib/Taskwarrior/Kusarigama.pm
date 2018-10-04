@@ -1,5 +1,24 @@
 package Taskwarrior::Kusarigama;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: plugin system for the Taskwarrior task manager
+$Taskwarrior::Kusarigama::VERSION = '0.9.3';
+
+# TODO document the kusarigama.dir key
+1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama - plugin system for the Taskwarrior task manager
+
+=head1 VERSION
+
+version 0.9.3
 
 =head1 SYNOPSIS
 
@@ -116,7 +135,6 @@ such that Taskwarrior will accept C<task my_custom_command> as a
 valid invocation, and then it runs as part of the C<launch>
 stage and will run the plugin code if the associated command was used.
 
-
 =head3 Adding custom fields to tasks
 
 Taskwarrior allows the creation of I<User-Defined Attributes> (UDAs). Plugins
@@ -205,7 +223,15 @@ the original blog entry
 
 =back
 
-=cut
+=head1 AUTHOR
 
-# TODO document the kusarigama.dir key
-1;
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

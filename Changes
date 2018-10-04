@@ -1,19 +1,11 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
+0.9.3 2018-10-03
   [ BUG FIXES ]
-     - use calculated due rather than rdue for calculating wait/scheduled
-       [GH#28, Sweth Chandramouli]
-
-  [ DOCUMENTATION ]
-
-  [ ENHANCEMENTS ]
-
-  [ NEW FEATURES ]
+    - use calculated due rather than rdue for calculating wait/scheduled
 
   [ STATISTICS ]
+    - code churn: 4 files changed, 252 insertions(+), 3 deletions(-)
 
 0.9.2 2018-07-28
   [ DOCUMENTATION ]

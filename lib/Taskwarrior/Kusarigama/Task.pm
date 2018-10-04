@@ -1,52 +1,13 @@
 package Taskwarrior::Kusarigama::Task;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: per-task Taskwarrior::Kusarigama::Wrapper
-
+$Taskwarrior::Kusarigama::Task::VERSION = '0.9.3';
 use strict;
 
 use experimental 'postderef';
 
 use Clone;
 
-=head1 SYNOPSIS
-
-    use Taskwarrior::Kusarigama::Wrapper;
-    use Taskwarrior::Kusarigama::Task;
-
-    my $tw = Taskwarrior::Kusarigama::Wrapper->new;
-
-    my ( $task ) = $tw->export;
-
-    say $task->info;
-
-=head1 DESCRIPTION
-
-Thin wrapper around the task hashrefs that calls L<Taskwarrior::Kusarigama::Wrapper>.
-
-Unless specified otherwise, the task must have
-an C<uuid> to be acted upon.
-
-=head1 METHODS
-
-=head2 new
-
-    my $task = Taskwarrior::Kusarigama::Task->new( \%data );
-
-    my $task = Taskwarrior::Kusarigama::Task->new( $wrapper, \%data );
-
-Constructor. Takes in a raw hashref of the task's 
-attributes as would be give by C<task export>, and
-an optional C<$wrapper>, which is the 
-L<Taskwarrior::Kusarigama::Wrapper>
-object to use. The wrapper object can also
-be passed via a C<_wrapper> attribute. 
-
-    # equivalent to the two-argument 'new'
-    my $task = Taskwarrior::Kusarigama::Task->new( 
-        { _wrapper => $wrapper, %data } 
-    );
-
-
-=cut
 
 sub new {
     my $class = shift;
@@ -75,12 +36,6 @@ sub add_note {
     };
 }
 
-=head2 clone
-
-Clone the current task. All attributes are copied, except for
-C<id>, C<uuid>, C<urgency>, C<status>, C<entry> and C<modified>.
-
-=cut
 
 sub clone {
     my $self = shift;
@@ -136,3 +91,71 @@ sub AUTOLOAD {
 1;
 
 __END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Task - per-task Taskwarrior::Kusarigama::Wrapper
+
+=head1 VERSION
+
+version 0.9.3
+
+=head1 SYNOPSIS
+
+    use Taskwarrior::Kusarigama::Wrapper;
+    use Taskwarrior::Kusarigama::Task;
+
+    my $tw = Taskwarrior::Kusarigama::Wrapper->new;
+
+    my ( $task ) = $tw->export;
+
+    say $task->info;
+
+=head1 DESCRIPTION
+
+Thin wrapper around the task hashrefs that calls L<Taskwarrior::Kusarigama::Wrapper>.
+
+Unless specified otherwise, the task must have
+an C<uuid> to be acted upon.
+
+=head1 METHODS
+
+=head2 new
+
+    my $task = Taskwarrior::Kusarigama::Task->new( \%data );
+
+    my $task = Taskwarrior::Kusarigama::Task->new( $wrapper, \%data );
+
+Constructor. Takes in a raw hashref of the task's 
+attributes as would be give by C<task export>, and
+an optional C<$wrapper>, which is the 
+L<Taskwarrior::Kusarigama::Wrapper>
+object to use. The wrapper object can also
+be passed via a C<_wrapper> attribute. 
+
+    # equivalent to the two-argument 'new'
+    my $task = Taskwarrior::Kusarigama::Task->new( 
+        { _wrapper => $wrapper, %data } 
+    );
+
+=head2 clone
+
+Clone the current task. All attributes are copied, except for
+C<id>, C<uuid>, C<urgency>, C<status>, C<entry> and C<modified>.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

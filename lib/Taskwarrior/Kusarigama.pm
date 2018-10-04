@@ -70,7 +70,7 @@ configuration under the key <kusarigama.plugins>. E.g.,
 
     kusarigama.plugins=Renew,Command::ButBefore,Command::AndAfter,+FishCurrent
 
-Plugin namess prefixed with a plus sign are left left alone (minus the '+'),
+Plugin names prefixed with a plus sign are left alone (minus the '+'),
 while the other ones get C<Taskwarrior::Kusarigama::Plugin::> prefixed to
 them.
 

@@ -122,12 +122,12 @@ sub on_exit {
 sub on_add {
     my( $self, $task ) = @_;
 
-    my $due = $task->{rdue};
-
     for my $field ( qw/ due wait scheduled / ) {
         next if $task->{$field};
 
         my $value = $task->{ 'r' . $field } or next;
+
+        my $due = $task->{due};
 
         $value =~ s/due/$due/g;
 

@@ -20,6 +20,7 @@ requires "MooseX::App::Command" => "0";
 requires "MooseX::MungeHas" => "0";
 requires "Net::GitHub" => "0";
 requires "Path::Tiny" => "0";
+requires "PerlX::Maybe" => "0";
 requires "Prompt::ReadKey" => "0";
 requires "Set::Object" => "0";
 requires "Symbol" => "0";

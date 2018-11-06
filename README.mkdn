@@ -4,7 +4,7 @@ Taskwarrior::Kusarigama - plugin system for the Taskwarrior task manager
 
 # VERSION
 
-version 0.9.3
+version 0.10.0
 
 # SYNOPSIS
 

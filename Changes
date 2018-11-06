@@ -8,6 +8,8 @@ Revision history for Taskwarrior-Hooks
   [ DOCUMENTATION ]
 
   [ ENHANCEMENTS ]
+  - In the plugin `Command::Open", added the possibility for different 
+        actions for the same filetype.
 
   [ NEW FEATURES ]
 

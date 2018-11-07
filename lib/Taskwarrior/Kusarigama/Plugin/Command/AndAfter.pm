@@ -7,8 +7,9 @@ package Taskwarrior::Kusarigama::Plugin::Command::AndAfter;
 
 =head1 DESCRIPTION 
 
-Creates a task that depends on the give task(s). If no previous task is 
-provided, defaults to C<+LATEST>.
+Creates a task that depends on the given task(s). If no previous task is 
+provided, defaults to C<+LATEST>. If no project is explicitly given for the 
+next task, it inherits the project of the previous task.
 
 =cut
 
@@ -16,6 +17,8 @@ use 5.10.0;
 
 use strict;
 use warnings;
+
+use PerlX::Maybe;
 
 use Moo;
 
@@ -26,14 +29,16 @@ with 'Taskwarrior::Kusarigama::Hook::OnCommand';
 sub on_command {
     my $self = shift;
 
-    my $select = $self->pre_command_args 
-        || ( $self->run_task->export( [ '+LATEST' ] ) )[0]->{uuid};
+    my( $previous ) = $self->run_task->export( [
+        $self->pre_command_args || '+LATEST'
+    ]);
 
-    $self->run_task->add( $self->post_command_args, { depends => $select } );
+    $self->run_task->add(  { 
+        maybe project => $previous->{project},
+        depends => $previous->{uuid} 
+    }, $self->post_command_args );
 
-    say for $self->run_task->list(
-        $self->run_task->_id( '+LATEST' )
-    );
+    say for $self->run_task->list( '+LATEST' );
 };
 
 1;

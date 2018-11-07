@@ -131,7 +131,7 @@ sub on_command {
     }
 
     for my $l ( @links ) {
-        my( $link, $link_type, $path, ) = $l->@*;
+        my( $link, $link_type ) = $l->@*;
         my $command = $prefixes->{ $type || $link_type };
         $command = $self->expand( $command, $link, @tasks );
         system $command;

@@ -1,21 +1,13 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
-  [ DOCUMENTATION ]
-
+0.10.0 2018-11-06
   [ ENHANCEMENTS ]
-  - In the plugin `Command::Open", added the possibility for different 
-        actions for the same filetype.
-  - 'and-after' and 'but-before' now inherit the previous task's project.
-
-
-  [ NEW FEATURES ]
+    - In the plugin `Command::Open", added the possibility for different 
+      actions for the same filetype.
+    - 'and-after' and 'but-before' now inherit the previous task's project.
 
   [ STATISTICS ]
+    - code churn: 7 files changed, 79 insertions(+), 35 deletions(-)
 
 0.9.3 2018-10-03
   [ BUG FIXES ]

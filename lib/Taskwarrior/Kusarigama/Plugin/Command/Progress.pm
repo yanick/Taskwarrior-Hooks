@@ -15,7 +15,7 @@ Tasks get two new UDAs: C<goal>, which sets a
 numeric goal to reach, and C<progress>, which is 
 the current state of progress. 
 
-Progress can be updated via the C<progress> command.
+Progress can be updated or asked via the C<progress> command.
 
     # add 3 units toward the goal
     $ task 123 progress 3
@@ -32,12 +32,19 @@ Progress can be updated via the C<progress> command.
     # record progress and add a note
     $ task 123 progress +3 I did a little bit of the thing
 
+    # ask about current task progress
+    $ task 123 progress ?
+
+    # ask about current task progress on three step forward
+    # real progress don't modified
+    $ task 123 progress ?3
+
 If the task has a due date, the progress command will
 also show a short report of your actual rate of completion
 version what is required to meet the goal on time.
 
     $ task 630 progress =170
-    630 =======------------ 170/475
+    630 =======------------ 170/475 (35.8%)
     15 days left, you are ahead of schedule (170 vs 118)
     rate so far: 34/day, rate needed: 20/day
 
@@ -117,23 +124,24 @@ sub on_command {
 
     die "no tasks found\n" unless @tasks;
 
-    my $note = $self->post_command_args =~ s/\s*(=?)(-?\d*)\s*//r;
+    my $note = $self->post_command_args =~ s/\s*(\??)(=?)(-?\d*)\s*//r;
 
     no warnings 'uninitialized';
     for my $task ( @tasks ) {
-        my $progress = $1 ? $2 : ($2||1) + $task->{progress};
+        my $save = !$1;
+        my $progress = $2 ? $3 : ($3||1) + $task->{progress};
         my $goal = $task->{goal};
 
         my $ratio = $progress / $goal;
 
-        print $task->{id}, ' ', '=' x ( 20 * $ratio ), '-' x ( 20 * ( 1 - $ratio ) ), ' ', $progress, '/', $goal, "\n";
+        print $task->{id}, ' ', '=' x ( 20 * $ratio ), '-' x ( 20 * ( 1 - $ratio ) ), ' ', $progress, '/', $goal, sprintf(" (%.1f%%)\n", $ratio*100), "\n";
 
         my $id = $task->{uuid};
-        $self->run_task->mod( [ $id ], { progress => $progress } );
-        $self->run_task->annotate( [ $id ], $note ) if $note;
+        $self->run_task->mod( [ $id ], { progress => $progress } ) if $save;
+        $self->run_task->annotate( [ $id ], $note ) if $note and $save;
         if ( $progress >= $task->{goal} ) {
             say "goal achieved!";
-            $self->run_task->done( [ $id ] );
+            $self->run_task->done( [ $id ] ) if $save;
         }
         elsif( $task->{due} ) {
             my ( $span ) = $self->calc( $task->{due}, '-', $task->{entry} ) =~ /(\d+)D/;

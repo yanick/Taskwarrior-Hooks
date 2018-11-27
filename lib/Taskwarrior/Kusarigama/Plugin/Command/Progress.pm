@@ -129,7 +129,11 @@ sub on_command {
     no warnings 'uninitialized';
     for my $task ( @tasks ) {
         my $save = !$1;
-        my $progress = $2 ? $3 : ($3||1) + $task->{progress};
+
+        my $progress = !$save ? $task->{progress} 
+                     : $2     ? $3 
+                     :          ($3||1) + $task->{progress};
+
         my $goal = $task->{goal};
 
         my $ratio = $progress / $goal;

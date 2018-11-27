@@ -6,6 +6,7 @@ Revision history for Taskwarrior-Hooks
   [ BUG FIXES ]
 
   [ DOCUMENTATION ]
+    - Fixed minor typo in the pod. [GH#29, Mohammad S Anwar]
 
   [ ENHANCEMENTS ]
 

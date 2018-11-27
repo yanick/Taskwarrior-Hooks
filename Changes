@@ -9,6 +9,7 @@ Revision history for Taskwarrior-Hooks
     - Fixed minor typo in the pod. [GH#29, Mohammad S Anwar]
 
   [ ENHANCEMENTS ]
+    - add command::progress question mark ("?") switch [GH#30, pru.mike]
 
   [ NEW FEATURES ]
 

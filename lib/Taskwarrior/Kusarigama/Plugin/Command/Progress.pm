@@ -1,54 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::Command::Progress;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: Record progress on a task
-
-=head1 SYNOPSIS
-
-    $ task add read ten books goal:10
-
-    ... later on ...
-
-    $ task 'read ten books' progress 
-
-=head1 DESCRIPTION
-
-Tasks get two new UDAs: C<goal>, which sets a
-numeric goal to reach, and C<progress>, which is 
-the current state of progress. 
-
-Progress can be updated or asked via the C<progress> command.
-
-    # add 3 units toward the goal
-    $ task 123 progress 3
-
-    # oops, two steps back
-    $ task 123 progress -2
-
-    # set progress to an absolute value
-    $ task 123 progress =9
-
-    # defaults to a +1 increment
-    $ task 123 progress
-
-    # record progress and add a note
-    $ task 123 progress +3 I did a little bit of the thing
-
-    # ask about current task progress
-    $ task 123 progress ?
-
-    # ask about current task progress on three step forward
-    # real progress don't modified
-    $ task 123 progress ?3
-
-If the task has a due date, the progress command will
-also show a short report of your actual rate of completion
-version what is required to meet the goal on time.
-
-    $ task 630 progress =170
-    630 =======------------ 170/475 (35.8%)
-    15 days left, you are ahead of schedule (170 vs 118)
-    rate so far: 34/day, rate needed: 20/day
-
-=cut    
+$Taskwarrior::Kusarigama::Plugin::Command::Progress::VERSION = '0.11.0';
 
 use strict;
 use warnings;
@@ -179,3 +132,76 @@ sub on_command {
 
 1;
 
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Plugin::Command::Progress - Record progress on a task
+
+=head1 VERSION
+
+version 0.11.0
+
+=head1 SYNOPSIS
+
+    $ task add read ten books goal:10
+
+    ... later on ...
+
+    $ task 'read ten books' progress 
+
+=head1 DESCRIPTION
+
+Tasks get two new UDAs: C<goal>, which sets a
+numeric goal to reach, and C<progress>, which is 
+the current state of progress. 
+
+Progress can be updated or asked via the C<progress> command.
+
+    # add 3 units toward the goal
+    $ task 123 progress 3
+
+    # oops, two steps back
+    $ task 123 progress -2
+
+    # set progress to an absolute value
+    $ task 123 progress =9
+
+    # defaults to a +1 increment
+    $ task 123 progress
+
+    # record progress and add a note
+    $ task 123 progress +3 I did a little bit of the thing
+
+    # ask about current task progress
+    $ task 123 progress ?
+
+    # ask about current task progress on three step forward
+    # real progress don't modified
+    $ task 123 progress ?3
+
+If the task has a due date, the progress command will
+also show a short report of your actual rate of completion
+version what is required to meet the goal on time.
+
+    $ task 630 progress =170
+    630 =======------------ 170/475 (35.8%)
+    15 days left, you are ahead of schedule (170 vs 118)
+    rate so far: 34/day, rate needed: 20/day
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

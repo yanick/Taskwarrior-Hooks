@@ -1,19 +1,14 @@
 Revision history for Taskwarrior-Hooks
 
-{{$NEXT}}
-  [ API CHANGES ]
-
-  [ BUG FIXES ]
-
+0.11.0 2018-11-27
   [ DOCUMENTATION ]
     - Fixed minor typo in the pod. [GH#29, Mohammad S Anwar]
 
   [ ENHANCEMENTS ]
     - add command::progress question mark ("?") switch [GH#30, pru.mike]
 
-  [ NEW FEATURES ]
-
   [ STATISTICS ]
+    - code churn: 4 files changed, 34 insertions(+), 15 deletions(-)
 
 0.10.0 2018-11-06
   [ ENHANCEMENTS ]

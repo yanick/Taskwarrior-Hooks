@@ -1,54 +1,7 @@
 package Taskwarrior::Kusarigama::Plugin::Command::Open;
+our $AUTHORITY = 'cpan:YANICK';
 # ABSTRACT: open links associated to a task
-
-=head1 SYNOPSIS
-
-    # open the link(s) of task 123
-    $  task 123 open
-
-    # only consider the wiki link
-    $ task 123 open wiki
-
-=head1 DESCRIPTION 
-
-Looks into the annotations of the task for link thingies, and open them.
-
-If the command finds exactly one link, it'll open it. If more than one is found,
-you'll be given the choice of which one you wish to launch.
-
-The format for annotated links is C<format:path>. The different formats live in
-the F<.taskrc>. When installed, the plugin will set up the C<http> and C<https> format,
-but you can add as many as you want. E.g.
-
-    $ task config kusarigama.plugin.open.http 'xdg-open {{{link}}}'
-    $ task config kusarigama.plugin.open.https 'xdg-open {{{link}}}'
-    $ task config kusarigama.plugin.open.wiki 'tmux split-window "nvim /home/yanick/vimwiki/{{{path}}}.mkd"'
-
-The commands are Mustache templates (using L<Template::Mustache>). The context provided
-to the template has three variables: C<link> (e.g., C<wiki:my_page>), C<path> (C<my_page>)
-and C<task>, which is the associated task object. 
-
-Note that in the examples I'm using the triple bracket notation such that the '/' in the paths don't get escaped.
-
-If you want to set more than one opening action for a type, append C<-action> to it. E.g.:
-
-    $ task config kusarigama.plugin.open.wiki 'cat "/home/yanick/vimwiki/{{{path}}}.mkd"'
-    $ task config kusarigama.plugin.open.wiki-edit 'tmux split-window "nvim /home/yanick/vimwiki/{{{path}}}.mkd"'
-
-    $ task open wiki         # prints it 
-    $ task open wiki-edit    # opens editor
-
-
-=head1 INSTALLATION
-
-    $ task-kusarigama add Command::Plugin
-
-=head1 SEE ALSO
-
-L<https://github.com/ValiValpas/taskopen> - shell-based inspiration for 
-this plugin.
-
-=cut
+$Taskwarrior::Kusarigama::Plugin::Command::Open::VERSION = '0.11.0';
 
 use 5.20.0;
 
@@ -154,3 +107,76 @@ sub expand( $self, $command, $link, $task ) {
 }
 
 1;
+
+__END__
+
+=pod
+
+=encoding UTF-8
+
+=head1 NAME
+
+Taskwarrior::Kusarigama::Plugin::Command::Open - open links associated to a task
+
+=head1 VERSION
+
+version 0.11.0
+
+=head1 SYNOPSIS
+
+    # open the link(s) of task 123
+    $  task 123 open
+
+    # only consider the wiki link
+    $ task 123 open wiki
+
+=head1 DESCRIPTION 
+
+Looks into the annotations of the task for link thingies, and open them.
+
+If the command finds exactly one link, it'll open it. If more than one is found,
+you'll be given the choice of which one you wish to launch.
+
+The format for annotated links is C<format:path>. The different formats live in
+the F<.taskrc>. When installed, the plugin will set up the C<http> and C<https> format,
+but you can add as many as you want. E.g.
+
+    $ task config kusarigama.plugin.open.http 'xdg-open {{{link}}}'
+    $ task config kusarigama.plugin.open.https 'xdg-open {{{link}}}'
+    $ task config kusarigama.plugin.open.wiki 'tmux split-window "nvim /home/yanick/vimwiki/{{{path}}}.mkd"'
+
+The commands are Mustache templates (using L<Template::Mustache>). The context provided
+to the template has three variables: C<link> (e.g., C<wiki:my_page>), C<path> (C<my_page>)
+and C<task>, which is the associated task object. 
+
+Note that in the examples I'm using the triple bracket notation such that the '/' in the paths don't get escaped.
+
+If you want to set more than one opening action for a type, append C<-action> to it. E.g.:
+
+    $ task config kusarigama.plugin.open.wiki 'cat "/home/yanick/vimwiki/{{{path}}}.mkd"'
+    $ task config kusarigama.plugin.open.wiki-edit 'tmux split-window "nvim /home/yanick/vimwiki/{{{path}}}.mkd"'
+
+    $ task open wiki         # prints it 
+    $ task open wiki-edit    # opens editor
+
+=head1 INSTALLATION
+
+    $ task-kusarigama add Command::Plugin
+
+=head1 SEE ALSO
+
+L<https://github.com/ValiValpas/taskopen> - shell-based inspiration for 
+this plugin.
+
+=head1 AUTHOR
+
+Yanick Champoux <yanick@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2018, 2017 by Yanick Champoux.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
+=cut

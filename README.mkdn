@@ -4,7 +4,7 @@ Taskwarrior::Kusarigama - plugin system for the Taskwarrior task manager
 
 # VERSION
 
-version 0.10.0
+version 0.10.1
 
 # SYNOPSIS
 
@@ -89,7 +89,7 @@ configuration under the key <kusarigama.plugins>. E.g.,
 kusarigama.plugins=Renew,Command::ButBefore,Command::AndAfter,+FishCurrent
 ```
 
-Plugin namess prefixed with a plus sign are left left alone (minus the '+'),
+Plugin names prefixed with a plus sign are left alone (minus the '+'),
 while the other ones get `Taskwarrior::Kusarigama::Plugin::` prefixed to
 them.
 

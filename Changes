@@ -10,6 +10,7 @@ Revision history for Taskwarrior-Hooks
   [ ENHANCEMENTS ]
 
   [ NEW FEATURES ]
+  - adds 'Blocks' (as in, reverse of depends) plugin.
 
   [ STATISTICS ]
 

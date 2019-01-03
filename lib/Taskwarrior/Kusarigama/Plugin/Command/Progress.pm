@@ -7,13 +7,13 @@ package Taskwarrior::Kusarigama::Plugin::Command::Progress;
 
     ... later on ...
 
-    $ task 'read ten books' progress 
+    $ task 'read ten books' progress
 
 =head1 DESCRIPTION
 
 Tasks get two new UDAs: C<goal>, which sets a
-numeric goal to reach, and C<progress>, which is 
-the current state of progress. 
+numeric goal to reach, and C<progress>, which is
+the current state of progress.
 
 Progress can be updated or asked via the C<progress> command.
 
@@ -48,7 +48,7 @@ version what is required to meet the goal on time.
     15 days left, you are ahead of schedule (170 vs 118)
     rate so far: 34/day, rate needed: 20/day
 
-=cut    
+=cut
 
 use strict;
 use warnings;
@@ -130,8 +130,8 @@ sub on_command {
     for my $task ( @tasks ) {
         my $save = !$1;
 
-        my $progress = !$save ? $task->{progress} 
-                     : $2     ? $3 
+        my $progress = !$save ? $task->{progress}
+                     : $2     ? $3
                      :          ($3||1) + $task->{progress};
 
         my $goal = $task->{goal};
@@ -160,12 +160,12 @@ sub on_command {
                 my @stats;
 
                 if( my $so_far = eval { $progress /  ($span-$now) } ) {
-                    push @stats, sprintf "rate so far: %s", 
+                    push @stats, sprintf "rate so far: %s",
                         $self->formatted_rate($so_far);
                 }
 
                 if( my $needed = eval { ($task->{goal} - $progress) / $now } ) {
-                    push @stats, sprintf "rate needed: %s", 
+                    push @stats, sprintf "rate needed: %s",
                         $self->formatted_rate($needed);
                 }
 

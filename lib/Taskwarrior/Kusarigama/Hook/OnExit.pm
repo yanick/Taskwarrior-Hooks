@@ -23,7 +23,7 @@ use warnings;
 =head1 DESCRIPTION
 
 Role consumed by plugins running during the exit stage of
-the Taskwarrior hook lifecycle. 
+the Taskwarrior hook lifecycle.
 
 Requires that a C<on_exit> is implemented.
 

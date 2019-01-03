@@ -33,16 +33,16 @@ an C<uuid> to be acted upon.
 
     my $task = Taskwarrior::Kusarigama::Task->new( $wrapper, \%data );
 
-Constructor. Takes in a raw hashref of the task's 
+Constructor. Takes in a raw hashref of the task's
 attributes as would be give by C<task export>, and
-an optional C<$wrapper>, which is the 
+an optional C<$wrapper>, which is the
 L<Taskwarrior::Kusarigama::Wrapper>
 object to use. The wrapper object can also
-be passed via a C<_wrapper> attribute. 
+be passed via a C<_wrapper> attribute.
 
     # equivalent to the two-argument 'new'
-    my $task = Taskwarrior::Kusarigama::Task->new( 
-        { _wrapper => $wrapper, %data } 
+    my $task = Taskwarrior::Kusarigama::Task->new(
+        { _wrapper => $wrapper, %data }
     );
 
 
@@ -100,7 +100,7 @@ sub data {
 
 sub save {
     my $self = shift;
-    
+
     my $new = $self->{_wrapper}->save($self->data);
 
     %$self = %$new;
@@ -124,7 +124,7 @@ sub AUTOLOAD {
     unshift @_, [] unless 'ARRAY' eq ref $_[0];
 
     use Carp;
-    my $uuid = $self->{uuid} 
+    my $uuid = $self->{uuid}
         or croak "task doesn't have an uuid\n";
 
     push $_[0]->@*, { uuid => $uuid };

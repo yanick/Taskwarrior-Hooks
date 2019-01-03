@@ -17,7 +17,7 @@ beats a dark AUTOLOAD heart, which convert any method
 call into an invocation of C<task> with whatever
 parameters are passed.
 
-If the first parameter to be passed to a command is an array ref, 
+If the first parameter to be passed to a command is an array ref,
 it's understood to be a filter that will be inserted before the command.
 Also, any parameter will be a hahsref, will be also be understood as a
 key-value pair, and given the right separator (C<=> for C<rc.*> arguments, C<:> for regular ones).
@@ -34,7 +34,7 @@ For example:
 
 =head2 export
 
-As a convenience, C<export> returns the list of tasks exported (as 
+As a convenience, C<export> returns the list of tasks exported (as
 L<Taskwarrior::Kusarigama::Task> objects) instead than as raw text.
 
 =cut
@@ -124,16 +124,16 @@ sub RUN($self,$cmd,@args) {
     $self->OUT(\@err);
 
     return @out;
-    
+
 }
 
 sub _map_to_arg ( $self, $entry ) {
 
-    if( not ref $entry ) {  # simple string 
-        # extract the attributes so that they are not dealt 
-        # with as part of the definition 
+    if( not ref $entry ) {  # simple string
+        # extract the attributes so that they are not dealt
+        # with as part of the definition
         my %opts;
-        
+
         while ( $entry =~ s/\b(?<key>[^\s:]+):(?<value>\S+)// ) {
             $opts{ $+{key} } = $+{value};
         }

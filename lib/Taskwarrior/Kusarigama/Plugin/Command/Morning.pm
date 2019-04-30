@@ -7,6 +7,9 @@ package Taskwarrior::Kusarigama::Plugin::Command::Morning;
 
 =head1 DESCRIPTION
 
+DEPRECATED: look at L<Taskwarrior::Kusarigama::Plugin::Morning>,
+that does the same thing as this command, but automatically.
+
 By default, taskwarrior runs its garbage
 collection each time it's run. The problem is,
 that garbage collection compact
@@ -25,7 +28,7 @@ but use this command once every morning.
 This command, by the way, is only a glorified
 
     $ task rc.gc=on list limit:1
- 
+
 =cut
 
 use strict;

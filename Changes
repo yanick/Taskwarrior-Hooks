@@ -7,14 +7,23 @@ Revision history for Taskwarrior-Hooks
 
   [ DOCUMENTATION ]
 
-  [ ENHANCEMENTS
+  [ ENHANCEMENTS ]
 
   [ NEW FEATURES ]
-  - adds 'Blocks' (as in, reverse of depends) plugin.
-  - adds 'Mikado' command.
-  - adds 'morning' plugin.
 
   [ STATISTICS ]
+
+0.12.0 2019-04-30
+  [ DOCUMENTATION ]
+    - ENHANCEMENTS
+
+  [ NEW FEATURES ]
+    - adds 'Blocks' (as in, reverse of depends) plugin.
+    - adds 'Mikado' command.
+    - adds 'morning' plugin.
+
+  [ STATISTICS ]
+    - code churn: 14 files changed, 269 insertions(+), 57 deletions(-)
 
 0.11.0 2018-11-27
   [ DOCUMENTATION ]

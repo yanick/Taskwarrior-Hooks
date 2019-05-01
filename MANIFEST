@@ -38,6 +38,7 @@ lib/Taskwarrior/Kusarigama/Plugin/Command/Open.pm
 lib/Taskwarrior/Kusarigama/Plugin/Command/Progress.pm
 lib/Taskwarrior/Kusarigama/Plugin/Command/Wait.pm
 lib/Taskwarrior/Kusarigama/Plugin/GitCommit.pm
+lib/Taskwarrior/Kusarigama/Plugin/Morning.pm
 lib/Taskwarrior/Kusarigama/Plugin/ProjectAlias.pm
 lib/Taskwarrior/Kusarigama/Plugin/ProjectDefaults.pm
 lib/Taskwarrior/Kusarigama/Plugin/Renew.pm
